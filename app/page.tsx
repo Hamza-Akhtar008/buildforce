@@ -28,7 +28,7 @@ export default function SignInPage() {
 
         <form className="space-y-6">
           {/* Email */}
-          <div className="flex items-center bg-[#444] rounded px-3">
+          <div className="flex items-center bg-white rounded px-3">
             <Mail className="text-gray-400 mr-2 h-5 w-5" />
             <Input
               id="email"
@@ -40,7 +40,7 @@ export default function SignInPage() {
           </div>
 
           {/* Password */}
-          <div className="flex items-center bg-[#444] rounded px-3 relative">
+          <div className="flex items-center bg-white rounded px-3 relative">
             <Lock className="text-gray-400 mr-2 h-5 w-5" />
             <Input
               id="password"
