@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card"
 import { Mail, Lock, Eye, EyeOff } from "lucide-react"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 
 export default function SignInPage() {
   const router = useRouter();
@@ -91,9 +92,9 @@ const handlelogin = async (e: React.FormEvent<HTMLFormElement>) => {
         <div className="mt-8 text-center">
           <p className="text-sm text-gray-400">
             Don&apos;t have an account?{" "}
-            <a href="/register" className="text-[#cb9c2c] hover:underline">
+            <Link href="/register" className="text-[#cb9c2c] hover:underline">
               Sign up
-            </a>
+            </Link>
           </p>
         </div>
       </Card>
