@@ -13,7 +13,7 @@ interface Props<StateType, FunctionsObjectType> {
 }
 
 //To create the 'Action Types' from 'FunctionsType'
-type GeneralFunctionType = (state: any, data: any) => any;
+type GeneralFunctionType = (state: unknown, data: unknown) => unknown;
 type GeneralFucntionsObjectType = { [k in string]: GeneralFunctionType };
 type CreateActionsType<FunctionsType extends GeneralFucntionsObjectType> = {
    [k in keyof FunctionsType]: Parameters<FunctionsType[k]>[1];
@@ -31,9 +31,9 @@ function buildReducer<StateType, FunctionsObjectType extends GeneralFucntionsObj
    return (state: StateType, action: Partial<ActionsType>) => {
       let tempState: StateType = { ...state };
       Object.keys(action).forEach((key) => {
-         let inferredKey = key as keyof FunctionsObjectType;
+         const inferredKey = key as keyof FunctionsObjectType;
          const func = functions[inferredKey];
-         tempState = func(tempState, action[inferredKey as keyof ActionsType]);
+         tempState = func(tempState, action[inferredKey as keyof ActionsType]) as StateType;
       });
       return tempState;
    };
@@ -43,7 +43,7 @@ function buildReducer<StateType, FunctionsObjectType extends GeneralFucntionsObj
                                                          Main function
 ##################################################################################################################################
 */
-export function createCustomContext<StateType extends Object, FunctionsObjectType extends GeneralFucntionsObjectType>({
+export function createCustomContext<StateType extends object, FunctionsObjectType extends GeneralFucntionsObjectType>({
    initialState,
    functions,
 }: Props<StateType, FunctionsObjectType>) {

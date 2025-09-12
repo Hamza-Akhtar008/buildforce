@@ -1,12 +1,6 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/next",
-      "config": {
-        "buildCommand": "CI=false next build --turbopack"
-      }
-    }
-  ]
+  "buildCommand": "NEXT_TELEMETRY_DISABLED=1 CI=false next build",
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD ./ ':(exclude)pnpm-lock.yaml'",
+  "installCommand": "pnpm install"
 }
