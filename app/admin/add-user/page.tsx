@@ -268,7 +268,7 @@ export default function AddUser() {
                      {/* Driver's License (Front) */}
                      <div className="space-y-2">
                         <Label htmlFor="driverLicenseFront">
-                           Driver's License (Front)
+                           Driver&apos;s License (Front)
                         </Label>
                         <div className="flex items-center space-x-4">
                            <div className="flex-1">
@@ -306,7 +306,7 @@ export default function AddUser() {
                      {/* Driver's License (Back) */}
                      <div className="space-y-2">
                         <Label htmlFor="driverLicenseBack">
-                           Driver's License (Back)
+                           Driver&apos;s License (Back)
                         </Label>
                         <div className="flex items-center space-x-4">
                            <div className="flex-1">

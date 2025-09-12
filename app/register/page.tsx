@@ -1,7 +1,9 @@
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { User, Phone, MapPin, Lock } from "lucide-react"
+
+import { User, Phone, MapPin, Lock, Link as LinkIcon } from "lucide-react"
+
 import Link from "next/link"
 
 export default function RegisterPage() {
@@ -95,9 +97,11 @@ export default function RegisterPage() {
             {/* Already have an account */}
             <p className="text-center text-sm text-gray-400 mt-4">
               Already have an account?{" "}
-            <Link href="/" className="text-[#cb9c2c] hover:underline">
-  Login
-</Link>
+
+              <Link href="/" className="text-[#cb9c2c] hover:underline">
+                Login
+              </Link>
+
             </p>
           </form>
         </Card>

@@ -235,7 +235,7 @@ export default function Notifications() {
                            No notifications
                         </h3>
                         <p className="text-muted-foreground">
-                           You're all caught up! New notifications will appear
+                           You&apos;re all caught up! New notifications will appear
                            here.
                         </p>
                      </CardContent>
