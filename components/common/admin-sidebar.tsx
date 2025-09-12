@@ -15,6 +15,7 @@ import {
    X,
 } from "lucide-react";
 import { useState } from "react";
+import logo from "@/public/images/logo.png";
 
 const sidebarItems = [
    {
@@ -90,8 +91,8 @@ export function AdminSidebar() {
                {/* Header */}
                <div className="p-6 border-b border-border">
                   <div className="flex items-center space-x-3">
-                     <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                        <Home className="h-5 w-5 text-primary-foreground" />
+                     <div className="w-8 h-8  rounded-lg flex items-center justify-center">
+                        <img src={logo.src}></img>
                      </div>
                      <div>
                         <h2 className="text-lg font-semibold">Build Force</h2>
