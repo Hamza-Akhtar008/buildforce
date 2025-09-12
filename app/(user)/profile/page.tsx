@@ -1,5 +1,5 @@
 'use client'
-import MyProfile from "./myProfile/MyProfile";
+import MyProfile from "@/components/userComponent/MyProfile";
 
 const ProfilePage = () => {
   return <MyProfile />;
