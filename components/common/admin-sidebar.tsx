@@ -48,6 +48,11 @@ const sidebarItems = [
       href: "/admin/export-data",
       icon: Download,
    },
+   {
+      title: "Profile",
+      href: "/admin/profile",
+      icon: UserPlus,
+   },
 ];
 
 export function AdminSidebar() {

@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Camera, Briefcase, Award, Globe, FileText, Lock, Star } from "lucide-react";
 import Link from "next/link";
-import ProfileCard from "@/components/userComponent/ProfileCard";
 
 const MyProfile = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -127,7 +126,6 @@ const MyProfile = () => {
           </div>
 
           {/* Navigation Cards Below Profile Card */}
-          <ProfileCard />
         </div>
       </div>
     </div>
