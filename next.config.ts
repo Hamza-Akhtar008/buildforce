@@ -12,7 +12,7 @@ const nextConfig: NextConfig = {
     // your project has type errors.
     ignoreBuildErrors: true,
   },
-  /* config options here */
+
 };
 
 export default nextConfig;
