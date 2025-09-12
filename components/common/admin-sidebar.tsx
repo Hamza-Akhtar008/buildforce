@@ -80,8 +80,10 @@ export function AdminSidebar() {
          {/* Sidebar */}
          <div
             className={cn(
-               "fixed left-0 top-0 z-40 h-screen w-64 bg-card border-r border-border transform transition-transform duration-200 ease-in-out md:translate-x-0 md:static md:z-auto",
-               isMobileOpen ? "translate-x-0" : "-translate-x-full"
+               "fixed left-0 top-0 z-40 h-screen w-64 bg-card border-r border-border transform transition-transform duration-200 ease-in-out",
+               isMobileOpen
+                  ? "translate-x-0"
+                  : "-translate-x-full md:translate-x-0"
             )}
          >
             <div className="flex flex-col h-screen">
