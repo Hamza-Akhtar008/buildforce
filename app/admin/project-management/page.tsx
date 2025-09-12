@@ -167,35 +167,38 @@ export default function ProjectManagement() {
       <div className="min-h-screen py-8">
          <div className="max-w-7xl mx-auto space-y-8">
             {/* Header Section */}
-            <div className="text-center">
-               <div className="flex items-center justify-center space-x-3 mb-4">
-                  <FolderOpen className="h-8 w-8 text-primary" />
-                  <h1 className="text-4xl font-bold">Project Management</h1>
-               </div>
-               <p className="text-muted-foreground text-lg mb-6">
-                  Manage and monitor all your construction projects in one
-                  place.
-               </p>
+        <div>
+  <div className="flex space-x-3 mb-4">
+    <FolderOpen className="h-8 w-8 text-primary" />
+    <h1 className="text-4xl font-bold">Project Management</h1>
+  </div>
 
-               <div className="flex items-center justify-center space-x-4">
-                  <Link href="/admin" className="cursor-pointer">
-                     <Button
-                        variant="ghost"
-                        className="text-primary hover:bg-primary/10 flex items-center space-x-2 cursor-pointer"
-                     >
-                        <ArrowLeft className="h-4 w-4" />
-                        <span>Back to Dashboard</span>
-                     </Button>
-                  </Link>
+  <p className="text-muted-foreground text-lg mb-6">
+    Manage and monitor all your construction projects in one place.
+  </p>
 
-                  <Link href="/admin/add-project" className="cursor-pointer">
-                     <Button className="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center space-x-2 cursor-pointer">
-                        <Plus className="h-4 w-4" />
-                        <span>Add New Project</span>
-                     </Button>
-                  </Link>
-               </div>
-            </div>
+  <div className="flex items-center">
+    {/* Back Button */}
+    <Link href="/admin" className="cursor-pointer">
+      <Button
+        variant="ghost"
+        className="text-primary hover:bg-primary/10 flex items-center space-x-2 cursor-pointer"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        <span>Back to Dashboard</span>
+      </Button>
+    </Link>
+
+    {/* Add Button (pushed to the right) */}
+    <Link href="/admin/add-project" className="cursor-pointer ml-auto">
+      <Button className="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center space-x-2 cursor-pointer">
+        <Plus className="h-4 w-4" />
+        <span>Add New Project</span>
+      </Button>
+    </Link>
+  </div>
+</div>
+
 
             {/* Projects Section */}
             <Card className="shadow-lg">

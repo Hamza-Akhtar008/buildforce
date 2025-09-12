@@ -133,15 +133,7 @@ export default function AdminDashboard() {
       <div className="min-h-screen mx-auto py-8">
          <div className="max-w-6xl mx-auto space-y-8">
             {/* Header Section */}
-            <div className="text-center">
-               <div className="flex items-center justify-center space-x-3 mb-4">
-                  <Home className="h-8 w-8 text-primary" />
-               
-               </div>
-               <p className="text-muted-foreground text-lg">
-                  Welcome to the Build Force Admin Dashboard
-               </p>
-            </div>
+            
 
             {/* Overview Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

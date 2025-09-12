@@ -6,10 +6,10 @@ import { ArrowLeft, Download } from "lucide-react";
 export default function ExportData() {
    return (
       <div className="min-h-screen py-8">
-         <div className="max-w-4xl mx-auto space-y-8">
+         <div className="max-w-6xl mx-auto space-y-8">
             {/* Header Section */}
-            <div className="text-center">
-               <div className="flex items-center justify-center space-x-3 mb-4">
+            <div >
+               <div className="flex space-x-3 mb-4">
                   <Download className="h-8 w-8 text-primary" />
                   <h1 className="text-4xl font-bold">Export Data</h1>
                </div>
