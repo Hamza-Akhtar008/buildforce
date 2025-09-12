@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import logo from "@/public/images/logo.png";
+import Image from 'next/image'
 
 const sidebarItems = [
    {
@@ -95,15 +96,20 @@ export function AdminSidebar() {
             <div className="flex flex-col h-screen">
                {/* Header */}
                <div className="p-6 border-b border-border">
-                  <div className="flex items-center space-x-3">
-                     <div className="w-8 h-8  rounded-lg flex items-center justify-center">
-                        <img src={logo.src}></img>
+                 <div className="flex items-center justify-center space-x-3">
+                     <div className="relative bg-white/20 align-center backdrop-blur-sm p-2.5 rounded-xl border border-white/30 group-hover:bg-white/30 transition-all duration-300 animate-glow">
+                        
+                         <Image
+                               src={logo.src}
+                               alt="build foirce"
+                               width={100}
+                               height={50}
+                               priority
+                               className="brightness-100"
+                             />
                      </div>
                      <div>
-                        <h2 className="text-lg font-semibold">Build Force</h2>
-                        <p className="text-xs text-muted-foreground">
-                           Admin Panel
-                        </p>
+                        
                      </div>
                   </div>
                </div>

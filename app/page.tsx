@@ -10,10 +10,10 @@ import { useRouter } from "next/navigation"
 export default function SignInPage() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false)
-const handlelogin = async()=>
-{
-router.push('/Dashboard');
-}
+const handlelogin = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault(); // stop form from refreshing the page
+  router.push("/Dashboard");
+};
   return (
     <div className="flex min-h-screen bg-[#222222] text-white items-center justify-center">
       <Card className="w-full max-w-md p-8 bg-[#333333] shadow-lg">
@@ -31,7 +31,7 @@ router.push('/Dashboard');
           <p className="text-gray-400">Sign in to your account to continue</p>
         </div>
 
-        <form className="space-y-6">
+        <form onSubmit={handlelogin}className="space-y-6">
           {/* Email */}
           <div className="flex items-center bg-white rounded px-3">
             <Mail className="text-gray-400 mr-2 h-5 w-5" />
@@ -80,7 +80,7 @@ router.push('/Dashboard');
           {/* Sign in Button */}
           <Button
             type="submit"
-            onClick={handlelogin}
+          
             className="w-full h-12 bg-[#cb9c2c] text-black font-semibold shadow-inner shadow-white/40 hover:bg-[#b58925]"
           >
             Sign in

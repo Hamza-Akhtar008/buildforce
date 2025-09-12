@@ -130,8 +130,8 @@ export default function AdminDashboard() {
    };
 
    return (
-      <div className="min-h-screen py-8">
-         <div className="max-w-4xl mx-auto space-y-8">
+      <div className="min-h-screen mx-auto py-8">
+         <div className="max-w-6xl mx-auto space-y-8">
             {/* Header Section */}
             <div className="text-center">
                <div className="flex items-center justify-center space-x-3 mb-4">
