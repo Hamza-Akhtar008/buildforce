@@ -3,45 +3,18 @@ import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Lock, Settings, BarChart2, Shield, Zap, FolderOpen } from "lucide-react";
 
-const adminSections = [
-	{
-		title: "Security",
-		icon: Lock,
-		link: "/admin/security"
-	},
-	{
-		title: "Admin Preferences",
-		icon: Settings,
-		link: "/admin/preferences"
-	},
-	{
-		title: "System Overview ",
-		icon: BarChart2,
-		link: "/admin/system-overview"
-	},
-	{
-		title: "Access & Permissions",
-		icon: Shield,
-		link: "/admin/access-permissions"
-	},
-	{
-		title: "Project Management",
-		icon: FolderOpen,
-		link: "/admin/project-management"
-	},
-	{
-		title: "Difference:",
-		icon: Zap,
-		link: "/admin/difference"
-	}
-];
+type Section = {
+  title: string;
+  icon: React.ElementType;
+  link: string;
+};
 
-const AdminCards = () => {
+const AdminCards = ({ sections }: { sections: Section[] }) => {
 	const [hoveredCard, setHoveredCard] = React.useState<number | null>(null);
 	return (
-		<div className="w-full max-w-2xl mx-auto flex-shrink-0">
+		<div className="w-full max-w-2xl mx-auto mb-4 flex-shrink-0">
 			<div className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
-				{adminSections.map((section, idx) => {
+				{sections.map((section :any, idx:any) => {
 					const IconComponent = section.icon;
 					const isHovered = hoveredCard === idx;
 					return (

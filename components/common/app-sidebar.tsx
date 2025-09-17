@@ -1,18 +1,28 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react"
+"use client";
 
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar"
+   Home,
+   FolderOpen,
+   UserPlus,
+   Plus,
+   Bell,
+   Download,
+   Menu,
+   X,
+   Inbox,
+   Calendar,
+   Search,
+   Settings,
+} from "lucide-react";
+import { useState } from "react";
+import logo from "@/public/images/logo.png";
+import Image from 'next/image'
 
-// Menu items.
-const items = [
+const sidebarItems = [
   {
     title: "Home",
     url: "/Dashboard",
@@ -30,7 +40,7 @@ const items = [
   },
   {
     title: "Attendance",
-    url: "#",
+    url: "/",
     icon: Search,
   },
   {
@@ -38,30 +48,101 @@ const items = [
     url: "/profile",
     icon: Settings,
   },
-]
+];
 
 export function AppSidebar() {
-  return (
-    <Sidebar>
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-    </Sidebar>
-  )
+   const pathname = usePathname();
+   const [isMobileOpen, setIsMobileOpen] = useState(false);
+
+   return (
+      <>
+         {/* Mobile Menu Button */}
+         <Button
+            variant="ghost"
+            size="sm"
+            className="fixed top-4 left-4 z-50 md:hidden bg-background border shadow-sm"
+            onClick={() => setIsMobileOpen(!isMobileOpen)}
+         >
+            {isMobileOpen ? (
+               <X className="h-4 w-4" />
+            ) : (
+               <Menu className="h-4 w-4" />
+            )}
+         </Button>
+
+         {/* Overlay for mobile */}
+         {isMobileOpen && (
+            <div
+               className="fixed inset-0 bg-black/50 z-40 md:hidden"
+               onClick={() => setIsMobileOpen(false)}
+            />
+         )}
+
+         {/* Sidebar */}
+         <div
+            className={cn(
+               "fixed left-0 top-0 z-40 h-screen w-64 bg-card border-r border-border transform transition-transform duration-200 ease-in-out",
+               isMobileOpen
+                  ? "translate-x-0"
+                  : "-translate-x-full md:translate-x-0"
+            )}
+         >
+            <div className="flex flex-col h-screen">
+               {/* Header */}
+               <div className="p-6 border-b border-border">
+                 <div className="flex items-center justify-center space-x-3">
+                     <div className="relative bg-white/20 align-center backdrop-blur-sm p-2.5 rounded-xl border border-white/30 group-hover:bg-white/30 transition-all duration-300 animate-glow">
+                        
+                         <Image
+                               src={logo.src}
+                               alt="build foirce"
+                               width={100}
+                               height={50}
+                               priority
+                               className="brightness-100"
+                             />
+                     </div>
+                     <div>
+                        
+                     </div>
+                  </div>
+               </div>
+
+               {/* Navigation */}
+               <nav className="flex-1 p-4 space-y-2">
+                  {sidebarItems.map((item) => {
+                     const isActive = pathname === item.url;
+                     const Icon = item.icon;
+
+                     return (
+                        <Link
+                           key={item.url}
+                           href={item.url}
+                           className="block cursor-pointer"
+                           onClick={() => setIsMobileOpen(false)}
+                        >
+                           <Button
+                              variant={isActive ? "default" : "ghost"}
+                              className={cn(
+                                 "w-full justify-start h-11 cursor-pointer transition-colors",
+                                 isActive
+                                    ? "bg-primary text-primary-foreground shadow-sm"
+                                    : "hover:bg-muted"
+                              )}
+                           >
+                              <Icon className="h-4 w-4 mr-3" />
+                              <span className="text-sm font-medium">
+                                 {item.title}
+                              </span>
+                           </Button>
+                        </Link>
+                     );
+                  })}
+               </nav>
+
+             
+            </div>
+         </div>
+      </>
+   );
 }
