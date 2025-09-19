@@ -10,25 +10,24 @@ export default async function DashboardLayout({
 }) {
    const cookieStore = await cookies();
    const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
-
+   // const pathName = usePathname();
+   // const unverified = pathName!.includes("/unverified");
+   //  const unverified = pathName!.includes("/unverified");
    return (
-   <SidebarProvider defaultOpen={true}>
-  <div className="flex min-h-screen w-full">
-    {/* Sidebar on the left */}
-    <AppSidebar />
+      <SidebarProvider defaultOpen={true}>
+         <div className="flex min-h-screen w-full">
+            {/* Sidebar on the left */}
+            <AppSidebar />
 
-    {/* Main content on the right */}
-    <div className="flex-1 flex flex-col">
-      <Header>
-        <SidebarTrigger />
-      </Header>
+            {/* Main content on the right */}
+            <div className="flex-1 flex flex-col">
+               <Header>
+                  <SidebarTrigger />
+               </Header>
 
-      <main className="md:ml-64">
-        {children}
-      </main>
-    </div>
-  </div>
-</SidebarProvider>
-
+               <main className="md:ml-64">{children}</main>
+            </div>
+         </div>
+      </SidebarProvider>
    );
 }

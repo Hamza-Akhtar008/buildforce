@@ -1,3 +1,4 @@
+"use client";
 import React, { Context, createContext, useContext, useReducer } from "react";
 
 /*################################################################################################################################
@@ -23,17 +24,20 @@ type CreateActionsType<FunctionsType extends GeneralFucntionsObjectType> = {
                                                       To build a reducer function
 ##################################################################################################################################
 */
-function buildReducer<StateType, FunctionsObjectType extends GeneralFucntionsObjectType, ActionsType>({
-   functions,
-}: {
-   functions: FunctionsObjectType;
-}) {
+function buildReducer<
+   StateType,
+   FunctionsObjectType extends GeneralFucntionsObjectType,
+   ActionsType
+>({ functions }: { functions: FunctionsObjectType }) {
    return (state: StateType, action: Partial<ActionsType>) => {
       let tempState: StateType = { ...state };
       Object.keys(action).forEach((key) => {
          const inferredKey = key as keyof FunctionsObjectType;
          const func = functions[inferredKey];
-         tempState = func(tempState, action[inferredKey as keyof ActionsType]) as StateType;
+         tempState = func(
+            tempState,
+            action[inferredKey as keyof ActionsType]
+         ) as StateType;
       });
       return tempState;
    };
@@ -43,27 +47,36 @@ function buildReducer<StateType, FunctionsObjectType extends GeneralFucntionsObj
                                                          Main function
 ##################################################################################################################################
 */
-export function createCustomContext<StateType extends object, FunctionsObjectType extends GeneralFucntionsObjectType>({
-   initialState,
-   functions,
-}: Props<StateType, FunctionsObjectType>) {
+export function createCustomContext<
+   StateType extends object,
+   FunctionsObjectType extends GeneralFucntionsObjectType
+>({ initialState, functions }: Props<StateType, FunctionsObjectType>) {
    //Create actions type using typeof functions object
    type ActionsType = CreateActionsType<FunctionsObjectType>;
 
    //Creathe reducer function
-   const reducer = buildReducer<StateType, FunctionsObjectType, ActionsType>({ functions });
+   const reducer = buildReducer<StateType, FunctionsObjectType, ActionsType>({
+      functions,
+   });
 
    //Create dispatch and context type
    type DispatchType = CreateDispatchType<ActionsType>;
    type ContextType = [StateType, DispatchType];
    //Create initial Context value and Context itself
-   const initialContext = [initialState, (() => {}) as DispatchType] as ContextType;
+   const initialContext = [
+      initialState,
+      (() => {}) as DispatchType,
+   ] as ContextType;
    const Context: Context<ContextType> = createContext(initialContext);
 
    //Create the wrapper function which provied that context
    const Provider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       const [state, dispatch] = useReducer(reducer, initialState);
-      return <Context.Provider value={[state, dispatch]}>{children}</Context.Provider>;
+      return (
+         <Context.Provider value={[state, dispatch]}>
+            {children}
+         </Context.Provider>
+      );
    };
 
    return {
