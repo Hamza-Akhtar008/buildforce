@@ -1,8 +1,12 @@
 import { createCustomContext } from "@/lib/CreateCustomContext";
 import react from "react";
 
-interface IGlobalState {}
-const initialState: IGlobalState = {};
+interface IGlobalState {
+   labourStage: "without-data" | "unverified" | "verified";
+}
+const initialState: IGlobalState = {
+   labourStage: "without-data",
+};
 
 const functions = {};
 
