@@ -124,18 +124,18 @@ const page = () => {
 					<CardTitle className="text-3xl font-bold tracking-tight">
 						Employment Applications
 					</CardTitle>
-					<div className="mt-4 flex gap-4 items-center flex-wrap">
+					<div className="mt-4 flex flex-col sm:flex-row gap-4 items-center flex-wrap">
 						<Input
 							placeholder="Search by name, role, or email..."
 							value={search}
 							onChange={(e) => setSearch(e.target.value)}
-							className="max-w-md"
+							className="w-full sm:max-w-md"
 						/>
 						<Select
 							value={statusFilter}
 							onValueChange={setStatusFilter}
 						>
-							<SelectTrigger className="max-w-xs min-w-[150px]">
+							<SelectTrigger className="w-full sm:max-w-xs min-w-[150px]">
 								<SelectValue placeholder="Filter by status" />
 							</SelectTrigger>
 							<SelectContent>
@@ -149,7 +149,7 @@ const page = () => {
 						</Select>
 					</div>
 				</CardHeader>
-				<CardContent className="p-6">
+				<CardContent className="p-2 sm:p-6">
 					{filteredApplications.length === 0 ? (
 						<div className="text-center py-8 text-muted-foreground">
 							No applications found.
@@ -159,15 +159,15 @@ const page = () => {
 							{filteredApplications.map((app) => (
 								<div
 									key={app.id}
-									className="flex items-center gap-6 bg-card rounded-lg p-5 shadow-sm border"
+									className="flex flex-col sm:flex-row items-center gap-6 bg-card rounded-lg p-3 sm:p-5 shadow-sm border"
 								>
 									<img
 										src={app.image}
 										alt={app.name}
 										className="w-20 h-20 rounded-full object-cover border-2 border-primary"
 									/>
-									<div className="flex-1 min-w-0">
-										<div className="flex items-center justify-between">
+									<div className="flex-1 min-w-0 w-full">
+										<div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
 											<h3 className="text-lg font-semibold text-foreground/90 truncate">
 												{app.name}
 											</h3>
