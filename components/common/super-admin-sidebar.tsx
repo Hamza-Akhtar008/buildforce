@@ -25,19 +25,19 @@ const sidebarItems = [
       icon: Home,
    },
    {
-      title: "My Projects",
-      href: "/admin/my-projects",
+      title: "Projects",
+      href: "/admin/project-management",
       icon: FolderOpen,
+   },
+   {
+      title: "Add User",
+      href: "/admin/add-user",
+      icon: UserPlus,
    },
    {
       title: "Add Project",
       href: "/admin/add-project",
       icon: Plus,
-   },
-   {
-      title: "Applications",
-      href: "/admin/applications",
-      icon: FolderOpen,
    },
    {
       title: "Notifications",
@@ -56,7 +56,7 @@ const sidebarItems = [
    },
 ];
 
-export function AdminSidebar() {
+export function SuperAdminSidebar() {
    const pathname = usePathname();
    const [isMobileOpen, setIsMobileOpen] = useState(false);
 
@@ -149,7 +149,7 @@ export function AdminSidebar() {
                {/* Footer */}
                <div className="p-4 border-t border-border">
                   <div className="text-xs text-muted-foreground text-center">
-                     Build Force Admin v1.0
+                     Build Force Super Admin v1.0
                   </div>
                </div>
             </div>
