@@ -16,7 +16,9 @@ import {
    Inbox,
    Calendar,
    Search,
-   Settings,Briefcase
+   Settings,Briefcase,
+   CalendarClock,
+   Building2
 } from "lucide-react";
 import { useState } from "react";
 import logo from "@/public/images/logo.png";
@@ -39,15 +41,15 @@ const sidebarItems = [
     url: "/applications",
     icon: Inbox,
   },
-  {
-    title: "Apply",
-    url: "#",
-    icon: Calendar,
+ {
+    title: "Attendance",
+    url: "/Attendance",
+    icon: CalendarClock,
   },
   {
-    title: "Attendance",
-    url: "/",
-    icon: Search,
+    title: "Project Wise Attendance",
+    url: "/ProjectWiseAttendance",
+    icon: Building2,
   },
   {
     title: "Profile",
