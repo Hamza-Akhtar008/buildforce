@@ -16,7 +16,7 @@ import {
    Inbox,
    Calendar,
    Search,
-   Settings,
+   Settings,Briefcase
 } from "lucide-react";
 import { useState } from "react";
 import logo from "@/public/images/logo.png";
@@ -27,6 +27,12 @@ const sidebarItems = [
     title: "Home",
     url: "/Dashboard",
     icon: Home,
+  },
+
+  {
+    title: "Job",
+    url: "/jobs",
+    icon: Briefcase,
   },
   {
     title: "Applications",
