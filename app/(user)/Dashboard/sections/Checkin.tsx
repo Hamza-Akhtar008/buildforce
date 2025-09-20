@@ -1,3 +1,4 @@
+"use client";
 import {
    Card,
    CardContent,
@@ -8,8 +9,30 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Clock, MapPin, Building, Timer } from "lucide-react";
+import { useGlobalContext } from "@/contexts/globalContext";
 
 export default function Checkin() {
+   const [{ clockedIn, clockedInTime }, dispatch] = useGlobalContext();
+   console.log("clockedIn", clockedIn);
+
+   const handleClockIn = () => {
+      dispatch({
+         setState: {
+            clockedIn: true,
+            clockedInTime: new Date(),
+         },
+      });
+   };
+
+   const handleClockOut = () => {
+      dispatch({
+         setState: {
+            clockedIn: false,
+            clockedInTime: undefined,
+         },
+      });
+   };
+
    return (
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
          {/* Clock In/Out Card */}
@@ -40,15 +63,39 @@ export default function Checkin() {
             </CardHeader>
             <CardContent>
                <div className="flex gap-4">
-                  <Button size="lg" className="flex-1">
+                  <Button
+                     size="lg"
+                     className="flex-1"
+                     onClick={handleClockIn}
+                     disabled={clockedIn}
+                     variant={clockedIn ? "secondary" : "default"}
+                  >
                      <Clock className="h-4 w-4 mr-2" />
-                     Clock In
+                     {clockedIn ? "Clocked In" : "Clock In"}
                   </Button>
-                  <Button variant="outline" size="lg" className="flex-1">
+                  <Button
+                     variant={clockedIn ? "default" : "outline"}
+                     size="lg"
+                     className="flex-1"
+                     onClick={handleClockOut}
+                     disabled={!clockedIn}
+                  >
                      <Clock className="h-4 w-4 mr-2" />
                      Clock Out
                   </Button>
                </div>
+               {clockedIn && clockedInTime && (
+                  <div className="mt-4 p-3 bg-primary/10 rounded-lg border border-primary/20">
+                     <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium text-primary">
+                           Currently Clocked In
+                        </span>
+                        <span className="text-xs text-muted-foreground">
+                           Since {clockedInTime.toLocaleTimeString()}
+                        </span>
+                     </div>
+                  </div>
+               )}
             </CardContent>
          </Card>
 
