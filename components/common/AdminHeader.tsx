@@ -26,7 +26,7 @@ export function AdminHeader({ children }: { children?: ReactNode }) {
    };
 
    return (
-      <header className="flex items-center justify-between bg-background px-6 py-4 w-full border-b border-border sticky top-0 shadow-sm h-20">
+      <header className="flex items-center justify-between bg-background z-50 px-6 py-4 w-full border-b border-border sticky top-0 shadow-sm h-20">
          <div className="flex items-center gap-6">{children}</div>
 
          <div className="flex items-center gap-4">
