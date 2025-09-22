@@ -251,7 +251,7 @@ const page = () => {
                 onChange={(e) => setBenefits(e.target.value)}
               />
               <div className="flex justify-end mt-6">
-                <Button className="bg-[#f5c242] text-black font-semibold px-6 py-2 rounded hover:bg-[#e0b12b] transition">
+                <Button className="bg-primary  text-black font-semibold px-6 py-2 rounded hover:scale-105 transition">
                   Post Job
                 </Button>
               </div>
