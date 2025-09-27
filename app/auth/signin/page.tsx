@@ -13,7 +13,7 @@ export default function SignInPage() {
    const [showPassword, setShowPassword] = useState(false);
    const handlelogin = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault(); // stop form from refreshing the page
-      router.push("/Dashboard");
+      router.push("/admin");
    };
    return (
       <div className="min-h-screen bg-background text-foreground">
