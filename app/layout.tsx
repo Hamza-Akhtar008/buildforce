@@ -5,7 +5,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { GlobalContextProvider } from "@/contexts/globalContext";
-
+import { Toaster } from 'react-hot-toast';
+import { AuthProvider } from "@/contexts/AuthContext";
 const geistSans = Geist({
    variable: "--font-geist-sans",
    subsets: ["latin"],
@@ -26,10 +27,12 @@ export default function RootLayout({
    children: React.ReactNode;
 }>) {
    return (
+      <AuthProvider>
+
       <html lang="en" suppressHydrationWarning>
          <body
             className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-         >
+            >
             <ThemeProvider
                attribute="class"
                defaultTheme="system"
@@ -37,9 +40,11 @@ export default function RootLayout({
                disableTransitionOnChange
             >
                <GlobalContextProvider>{children}</GlobalContextProvider>
+               <Toaster />
                {/* {children} */}
             </ThemeProvider>
          </body>
       </html>
+               </AuthProvider>
    );
 }

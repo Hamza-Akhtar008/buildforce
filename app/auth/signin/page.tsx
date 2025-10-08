@@ -4,16 +4,72 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { LoginUser } from "@/lib/AuthAPi/auth";
+import { notifyError, notifySuccess } from "@/lib/toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function SignInPage() {
+    const { auth,loading,login } = useAuth();
    const router = useRouter();
+   const [Email,setEmail]=useState("");
+   const [password,setPassword]=useState("");
+
    const [showPassword, setShowPassword] = useState(false);
+
+   useEffect(() => {
+    if (auth) {
+     
+        if (auth.role === "Labour") {
+          router.push("/unverified/skills-selection")
+        } else if (auth.role === "Admin") {
+          router.push("/admin") // or your user dashboard
+       
+      
+    } 
+   }
+  }, [auth, router])
+  
    const handlelogin = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault(); // stop form from refreshing the page
+      if(!Email)
+      {
+ notifyError("Please Enter Email");
+      }
+      if(!password)
+      {
+          notifyError("Please Enter Password");
+      }
+      const payload = {
+         email:Email,
+         password:password,
+      }
+const response = await LoginUser(payload);
+if(response)
+{
+
+  
+   notifySuccess("Login Succesfully");
+
+   login(response)
+   if(response.role=="Labour")
+   {
+      
+      router.push("/unverified/skills-selection");
+   }
+   else
+   {
       router.push("/admin");
+
+   }
+}
+else
+{
+      notifyError("Login Failed");
+}
+      
    };
    return (
       <div className="min-h-screen bg-background text-foreground">
@@ -41,6 +97,8 @@ export default function SignInPage() {
                   <div className="relative">
                      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                      <Input
+                     value={Email}
+                     onChange={(e)=>setEmail(e.target.value)}
                         id="email"
                         type="email"
                         placeholder="Enter your email address"
@@ -53,6 +111,8 @@ export default function SignInPage() {
                   <div className="relative">
                      <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                      <Input
+                     value={password}
+                     onChange={(e)=>setPassword(e.target.value)}
                         id="password"
                         type={showPassword ? "text" : "password"}
                         placeholder="Enter your password"
@@ -131,6 +191,8 @@ export default function SignInPage() {
                      <div className="relative">
                         <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                         <Input
+                        value={Email}
+                        onChange={(e)=>setEmail(e.target.value)}
                            id="email"
                            type="email"
                            placeholder="Enter your email address"
@@ -144,6 +206,8 @@ export default function SignInPage() {
                         <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                         <Input
                            id="password"
+                           value={password}
+                           onChange={(e)=>setPassword(e.target.value)}
                            type={showPassword ? "text" : "password"}
                            placeholder="Enter your password"
                            required
