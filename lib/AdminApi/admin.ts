@@ -22,3 +22,25 @@ export const GetallUsers = async () => {
     }
   }
 };
+
+
+export const ScheduleInterview = async (payload:any) => {
+  try {
+    const token = getAuth().access_token;
+
+    const response = await axios.post(Baseurl + "interview",payload, {
+      headers: {
+        Authorization: `Bearer ${token}`, // ✅ attach token
+      },
+    });
+
+    console.log(response);
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      throw error; // preserve full error response (status, data, etc.)
+    } else {
+      throw new Error("Fetching users failed. Please try again.");
+    }
+  }
+};

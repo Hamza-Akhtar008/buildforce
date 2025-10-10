@@ -7,7 +7,6 @@ import { Badge } from "@/components/ui/badge"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { LabourProfileModal } from "./labour-profile-modal"
 import { ScheduleInterviewModal } from "./schedule-interview-modal"
 import type { User, VerificationStatus } from "@/types/user"
@@ -22,6 +21,10 @@ import {
   CalendarClock,
   User2,
   Mail,
+  CheckCircle2,
+  XCircle,
+  Clock,
+  Inbox,
 } from "lucide-react"
 import { GetallUsers } from "@/lib/AdminApi/admin"
 
@@ -68,207 +71,223 @@ export function UsersTable() {
   return (
     <div className="rounded-lg border">
       {/* Toolbar */}
-      <div className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-2 w-full sm:w-1/2">
-          <User2 className="size-4 text-muted-foreground" />
-          <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search by name, email, or ID" />
-        </div>
-        <div className="flex items-center gap-2">
-          <Filter className="size-4 text-muted-foreground" />
-          <Select value={filterStatus} onValueChange={(v) => setFilterStatus(v as any)}>
-            <SelectTrigger className="h-8 w-[180px]">
-              <SelectValue placeholder="Filter status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All</SelectItem>
-              <SelectItem value="pending">pending</SelectItem>
-              <SelectItem value="submitted">submitted</SelectItem>
-              <SelectItem value="interview">interview</SelectItem>
-              <SelectItem value="approved">approved</SelectItem>
-              <SelectItem value="rejected">rejected</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
+     <div
+  className="
+    flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between
+    backdrop-blur-md bg-white/10 border border-white/20
+    rounded-xl shadow-md
+    transition-all duration-300
+    hover:bg-white/20
+  "
+>
+  <div className="flex items-center gap-2 w-full sm:w-1/2">
+    <User2 className="size-4 text-muted-foreground" />
+    <Input
+      value={q}
+      onChange={(e) => setQ(e.target.value)}
+      placeholder="Search by name, email, or ID"
+      className="bg-white/5 backdrop-blur-sm border border-white/20 focus:bg-white/10"
+    />
+  </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead className="bg-secondary/60">
-            <tr className="[&>th]:px-4 [&>th]:py-3 text-left">
-              <th>ID</th>
-              <th>User</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Status</th>
-              <th className="w-[360px]">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users?.map((user) => {
-              const status = user.verificationStatus as VerificationStatus
-              const hasProfile = !!user.labourProfile
-              const canViewProfile =
-                hasProfile &&
-                (status === "submitted" || status === "interview" || status === "approved" || status === "rejected")
-              const canSchedule = status === "submitted"
+  <div className="flex items-center gap-2">
+    <Filter className="size-4 text-muted-foreground" />
+    <Select value={filterStatus} onValueChange={(v) => setFilterStatus(v as any)}>
+      <SelectTrigger
+        className="
+          h-8 w-[180px]
+          bg-white/5 backdrop-blur-sm border border-white/20
+          focus:ring-2 focus:ring-white/30
+        "
+      >
+        <SelectValue placeholder="Filter status" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="all">All</SelectItem>
+        <SelectItem value="pending">Pending</SelectItem>
+        <SelectItem value="submitted">Submitted</SelectItem>
+        <SelectItem value="interview">Interview</SelectItem>
+        <SelectItem value="approved">Approved</SelectItem>
+        <SelectItem value="rejected">Rejected</SelectItem>
+      </SelectContent>
+    </Select>
+  </div>
+</div>
 
-              const resume = user.labourProfile?.resumeUrl
-              const idProof = user.labourProfile?.idProofUrl
-              const cert = user.labourProfile?.certificateUrl
-              const portfolio = user.labourProfile?.portfolioUrl
 
-              return (
-                <tr key={user.id} className="border-t align-top">
-                  <td className="px-4 py-3">{user.id}</td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-2">
-                      <div className="size-8 rounded-full bg-secondary grid place-items-center">
-                        <User2 className="size-4 text-muted-foreground" />
-                      </div>
-                      <div className="leading-tight">
-                        <div className="font-medium">{user.name}</div>
-                        <div className="text-xs text-muted-foreground">{user.phone || "—"}</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-2">
-                      <Mail className="size-3.5 text-muted-foreground" />
-                      <span className="truncate max-w-[220px]">{user.email}</span>
-                    </div>
-                  </td>
-                  <td className="px-4 py-3">{user.role}</td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-2">
-                      <Badge variant={statusColors[status]} className="capitalize">
-                        {status}
-                      </Badge>
-                      <Select value={status} onValueChange={(v) => setStatus(user.id, v as VerificationStatus)}>
-                        <SelectTrigger className="h-8 w-[150px]">
-                          <SelectValue placeholder="Set status" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="pending">pending</SelectItem>
-                          <SelectItem value="submitted">submitted</SelectItem>
-                          <SelectItem value="interview">interview</SelectItem>
-                          <SelectItem value="approved">approved</SelectItem>
-                          <SelectItem value="rejected">rejected</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </td>
-                  <td className="px-4 py-3">
-                    <TooltipProvider>
-                      <div className="flex flex-wrap items-center gap-2">
-                        <LabourProfileModal
-                          user={user}
-                          trigger={
-                            <Tooltip>
-                              <TooltipTrigger asChild>
-                                <Button size="sm" variant="outline" disabled={!canViewProfile}>
-                                  <Eye className="size-4 mr-2" />
-                                  View profile
-                                </Button>
-                              </TooltipTrigger>
-                              <TooltipContent>Open profile with file preview</TooltipContent>
-                            </Tooltip>
-                          }
-                        />
+    <div className="overflow-x-auto rounded-xl bg-white/10 backdrop-blur-md border border-white/20 shadow-md mt-4">
+  <table className="w-full text-sm text-left text-white/90">
+    <thead className="bg-white/20 text-white uppercase text-xs tracking-wider">
+      <tr className="[&>th]:px-4 [&>th]:py-3">
+        <th className="w-[60px]">ID</th>
+        <th>User</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Status</th>
+        <th className="w-[360px]">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {users?.map((user) => {
+        const status = user.verificationStatus as VerificationStatus
+        const hasProfile = !!user.labourProfile
+        const canViewProfile =
+          hasProfile &&
+          (status === "submitted" || status === "interview" || status === "approved" || status === "rejected")
+        const canSchedule = status === "submitted"
 
-                        {canSchedule ? (
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <div>
-                                <ScheduleInterviewModal
-                                  candidateId={user.id}
-                                  trigger={
-                                    <Button size="sm">
-                                      <CalendarClock className="size-4 mr-2" />
-                                      Schedule
-                                    </Button>
-                                  }
-                                />
-                              </div>
-                            </TooltipTrigger>
-                            <TooltipContent>Schedule interview dates and time slots</TooltipContent>
-                          </Tooltip>
-                        ) : null}
+        const resume = user.labourProfile?.resumeUrl
+        const idProof = user.labourProfile?.idProofUrl
+        const cert = user.labourProfile?.certificateUrl
+        const portfolio = user.labourProfile?.portfolioUrl
 
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button size="sm" variant="secondary">
-                              <FolderOpen className="size-4 mr-2" />
-                              Downloads
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem asChild>
-                              <a
-                                href={resume || "#"}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                download
-                                className={!resume ? "pointer-events-none opacity-50" : ""}
-                              >
-                                <FileText className="size-4 mr-2" />
-                                Resume
-                              </a>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem asChild>
-                              <a
-                                href={idProof || "#"}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                download
-                                className={!idProof ? "pointer-events-none opacity-50" : ""}
-                              >
-                                <IdCard className="size-4 mr-2" />
-                                ID Proof
-                              </a>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem asChild>
-                              <a
-                                href={cert || "#"}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                download
-                                className={!cert ? "pointer-events-none opacity-50" : ""}
-                              >
-                                <BadgeCheck className="size-4 mr-2" />
-                                Certificate
-                              </a>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem asChild>
-                              <a
-                                href={portfolio || "#"}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                download
-                                className={!portfolio ? "pointer-events-none opacity-50" : ""}
-                              >
-                                <Download className="size-4 mr-2" />
-                                Portfolio
-                              </a>
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </div>
-                    </TooltipProvider>
-                  </td>
-                </tr>
-              )
-            })}
+        const statusIcon =
+          status === "pending" ? (
+            <Clock className="size-4 text-yellow-400" />
+          ) : status === "submitted" ? (
+            <Inbox className="size-4 text-blue-400" />
+          ) : status === "interview" ? (
+            <CalendarClock className="size-4 text-indigo-400" />
+          ) : status === "approved" ? (
+            <CheckCircle2 className="size-4 text-emerald-400" />
+          ) : (
+            <XCircle className="size-4 text-rose-400" />
+          )
 
-            {!users?.length && (
-              <tr>
-                <td className="px-4 py-6 text-muted-foreground" colSpan={6}>
-                  No users found.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+        return (
+          <tr
+            key={user.id}
+            className="border-t border-white/10 hover:bg-white/10 transition-colors duration-150"
+          >
+            <td className="px-4 py-3">{user.id}</td>
+            <td className="px-4 py-3">
+              <div className="flex items-center gap-2">
+                <div className="size-8 rounded-full bg-white/10 grid place-items-center">
+                  <User2 className="size-4 text-white/70" />
+                </div>
+                <div className="leading-tight">
+                  <div className="font-medium text-white">{user.name}</div>
+                  <div className="text-xs text-white/60">{user.phone || "—"}</div>
+                </div>
+              </div>
+            </td>
+            <td className="px-4 py-3">
+              <div className="flex items-center gap-2 truncate max-w-[220px]">
+                <Mail className="size-3.5 text-white/60" />
+                <span>{user.email}</span>
+              </div>
+            </td>
+            <td className="px-4 py-3 text-white/80">{user.role}</td>
+            <td className="px-4 py-3">
+              <div className="flex items-center gap-2">
+                {statusIcon}
+                <Badge variant={statusColors[status]} className="capitalize bg-white/20 text-white">
+                  {status}
+                </Badge>
+              </div>
+            </td>
+            <td className="px-4 py-3">
+              <div className="flex flex-wrap items-center gap-2">
+                <LabourProfileModal
+                  user={user}
+                  trigger={
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      disabled={!canViewProfile}
+                      title="Open profile"
+                      className="border-white/20 text-white/90 hover:bg-white/20"
+                    >
+                      <Eye className="size-4" />
+                    </Button>
+                  }
+                />
+
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => setStatus(user.id, "approved")}
+                  title="Approve"
+                  className="text-emerald-400 hover:bg-emerald-400/20"
+                >
+                  <CheckCircle2 className="size-4" />
+                </Button>
+
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => setStatus(user.id, "rejected")}
+                  title="Reject"
+                  className="text-rose-400 hover:bg-rose-400/20"
+                >
+                  <XCircle className="size-4" />
+                </Button>
+
+                {canSchedule && (
+                  <ScheduleInterviewModal
+                    candidateId={user.id}
+                    trigger={
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="text-indigo-400 hover:bg-indigo-400/20"
+                        title="Schedule interview"
+                      >
+                        <CalendarClock className="size-4" />
+                      </Button>
+                    }
+                  />
+                )}
+
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      className="bg-white/10 hover:bg-white/20 border border-white/20 text-white"
+                    >
+                      <FolderOpen className="size-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="bg-white/10 backdrop-blur-md border border-white/20">
+                    {[
+                      { label: "Resume", icon: FileText, url: resume },
+                      { label: "ID Proof", icon: IdCard, url: idProof },
+                      { label: "Certificate", icon: BadgeCheck, url: cert },
+                      { label: "Portfolio", icon: Download, url: portfolio },
+                    ].map(({ label, icon: Icon, url }) => (
+                      <DropdownMenuItem asChild key={label}>
+                        <a
+                          href={url || "#"}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          download
+                          className={!url ? "pointer-events-none opacity-50" : "text-white hover:text-emerald-300"}
+                        >
+                          <Icon className="size-4 mr-2" />
+                          {label}
+                        </a>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </td>
+          </tr>
+        )
+      })}
+
+      {!users?.length && (
+        <tr>
+          <td className="px-4 py-6 text-white/60 text-center" colSpan={6}>
+            No users found.
+          </td>
+        </tr>
+      )}
+    </tbody>
+  </table>
+</div>
+
     </div>
   )
 }
