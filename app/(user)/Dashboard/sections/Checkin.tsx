@@ -10,27 +10,80 @@ import {
 import { Button } from "@/components/ui/button";
 import { Clock, MapPin, Building, Timer } from "lucide-react";
 import { useGlobalContext } from "@/contexts/globalContext";
+import { useEffect } from "react";
 
 export default function Checkin() {
    const [{ clockedIn, clockedInTime }, dispatch] = useGlobalContext();
    console.log("clockedIn", clockedIn);
 
+   // Load state from sessionStorage on component mount
+   useEffect(() => {
+      const savedClockState = sessionStorage.getItem("clockState");
+      if (savedClockState) {
+         try {
+            const { clockedIn: savedClockedIn, clockedInTime: savedTime } =
+               JSON.parse(savedClockState);
+            dispatch({
+               setState: {
+                  clockedIn: savedClockedIn,
+                  clockedInTime: savedTime ? new Date(savedTime) : undefined,
+               },
+            });
+         } catch (error) {
+            console.error("Error parsing saved clock state:", error);
+            sessionStorage.removeItem("clockState");
+         }
+      }
+   }, [dispatch]);
+
+   // Save state to sessionStorage whenever it changes
+   useEffect(() => {
+      const clockState = {
+         clockedIn,
+         clockedInTime: clockedInTime ? clockedInTime.toISOString() : null,
+      };
+      sessionStorage.setItem("clockState", JSON.stringify(clockState));
+   }, [clockedIn, clockedInTime]);
+
    const handleClockIn = () => {
+      const newClockInTime = new Date();
+      const newState = {
+         clockedIn: true,
+         clockedInTime: newClockInTime,
+      };
+
       dispatch({
-         setState: {
-            clockedIn: true,
-            clockedInTime: new Date(),
-         },
+         setState: newState,
       });
+
+      // Immediately save to sessionStorage
+      sessionStorage.setItem(
+         "clockState",
+         JSON.stringify({
+            clockedIn: true,
+            clockedInTime: newClockInTime.toISOString(),
+         })
+      );
    };
 
    const handleClockOut = () => {
+      const newState = {
+         clockedIn: false,
+         clockedInTime: undefined,
+      };
+
       dispatch({
-         setState: {
-            clockedIn: false,
-            clockedInTime: undefined,
-         },
+         setState: newState,
       });
+
+      // Immediately save to sessionStorage
+      sessionStorage.setItem(
+         "clockState",
+         JSON.stringify({
+            clockedIn: false,
+            clockedInTime: null,
+         })
+      );
    };
 
    return (
