@@ -13,6 +13,7 @@ import {
    Download,
    Menu,
    X,
+   Users,
 } from "lucide-react";
 import { useState } from "react";
 import logo from "@/public/images/logo.png";
@@ -23,6 +24,11 @@ const sidebarItems = [
       title: "Dashboard",
       href: "/admin",
       icon: Home,
+   },
+   {
+      title: "Users",
+      href: "/admin/users",
+      icon: Users,
    },
    {
       title: "My Projects",

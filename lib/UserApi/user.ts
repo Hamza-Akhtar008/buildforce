@@ -19,4 +19,23 @@ export const RegisterProfile = async (multipartform:any) => {
 }
 
 
+export const FetchProfile = async (id:number|undefined) => {
+  try {
+  
+    const response = await axios.get(Baseurl+`labour-profile/${id}`)
+  
+  
+    return response.data
+  } catch (error: any) {
+    // Preserve the full error object with status and response data
+    if (error.response) {
+      // Throw the entire error response to preserve status code and data
+      throw error;
+    } else {
+      throw new Error("Registration failed. Please try again.")
+    }
+  }
+}
+
+
 

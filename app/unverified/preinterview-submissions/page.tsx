@@ -123,7 +123,7 @@ const handleContinue = async () => {
     // Attach the skill-related fields
     form.append("skillLevel", selections.skillLevel || "")
     form.append("experienceRange", selections.experienceRange || "")
-    form.append("verificationStatus", "pending") // Hardcoded value as per the requirement
+   // form.append("verificationStatus", "pending") // Hardcoded value as per the requirement
     form.append("skills", JSON.stringify(selections.trades)) // Assuming trades is an array of skill IDs
 
     // Attach documents

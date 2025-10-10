@@ -12,12 +12,14 @@ import {
    DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/AuthContext";
 
 export function AdminHeader({ children }: { children?: ReactNode }) {
    const router = useRouter();
-
+const {logout } = useAuth();
    const handleLogout = () => {
       // Clear any stored user data/tokens here if needed
+      logout();
       router.push("/auth/signin");
    };
 

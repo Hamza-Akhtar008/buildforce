@@ -23,7 +23,15 @@ export default function SignInPage() {
     if (auth) {
      
         if (auth.role === "Labour") {
-          router.push("/unverified/skills-selection")
+         if(auth.verificationStatus=="pending")
+         {
+
+            router.push("/unverified/skills-selection")
+         }
+         else if(auth.verificationStatus=="submitted")
+         {
+              router.push("/unverified/document-submitted");
+         }
         } else if (auth.role === "Admin") {
           router.push("/admin") // or your user dashboard
        
@@ -50,14 +58,22 @@ const response = await LoginUser(payload);
 if(response)
 {
 
+  console.log(response);
   
-   notifySuccess("Login Succesfully");
-
-   login(response)
-   if(response.role=="Labour")
+  notifySuccess("Login Succesfully");
+  login(response)
+  if(response.role=="Labour")
    {
-      
-      router.push("/unverified/skills-selection");
+    if(response.verificationStatus=="pending")
+      {
+
+     
+         router.push("/unverified/skills-selection");
+      }
+      else{
+
+         router.push("/unverified/select-interview");
+      }  
    }
    else
    {

@@ -17,6 +17,7 @@ type AuthData = {
   access_token: string;
   role: UserRole;
   id: number;
+  verificationStatus:string
 };
 
 // Define the shape of the context
@@ -51,6 +52,7 @@ useEffect(() => {
     access_token: data.access_token,
     role: data.role,
     id: data.id,
+    verificationStatus:data.verificationStatus
   };
   setAuth(authData); // Persist to localStorage
   setAuthState(authData); // Update state

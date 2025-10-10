@@ -1,18 +1,32 @@
-export type UserRole = "admin" | "worker" | "contractor";
+export type UserRole = "admin" | "Labour" | "contractor";
 
 export type AccessLevel = "basic" | "advanced";
 
-export interface User {
-   id: string;
-   fullName: string;
-   email: string;
-   phoneNumber: string;
-   role: UserRole;
-   location: string;
-   accessLevel: AccessLevel;
-   tempPassword?: string;
-   createdAt: Date;
-   updatedAt: Date;
+export type VerificationStatus = "pending" | "submitted" | "interview" | "approved" | "rejected"
+
+export type LabourProfile = {
+  id: number
+  resumeUrl: string | null
+  idProofUrl: string | null
+  certificateUrl: string | null
+  portfolioUrl: string | null
+  skillLevel: string | null
+  experienceRange: string | null
+  skills: string | null
+}
+
+export type User = {
+  id: number
+  name: string
+  phone?: string
+  email: string
+  password?: string
+  location?: string
+  role: string
+  createdAt?: string
+  updatedAt?: string
+  verificationStatus: VerificationStatus
+  labourProfile: LabourProfile | null
 }
 
 export interface CreateUserData {
@@ -24,3 +38,5 @@ export interface CreateUserData {
    accessLevel: AccessLevel;
    tempPassword: string;
 }
+
+

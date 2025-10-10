@@ -37,17 +37,25 @@ export default function RegisterPage() {
   const [location, setLocation] = useState<LocationValue>({})
 const {auth} = useAuth();
    useEffect(() => {
-      if (auth) {
-       
-          if (auth.role === "Labour") {
+    if (auth) {
+     
+        if (auth.role === "Labour") {
+         if(auth.verificationStatus=="pending")
+         {
+
             router.push("/unverified/skills-selection")
-          } else if (auth.role === "Admin") {
-            router.push("/admin") // or your user dashboard
-         
-        
-      } 
-     }
-    }, [auth, router])
+         }
+         else if(auth.verificationStatus=="submitted")
+         {
+              router.push("/unverified/document-submitted");
+         }
+        } else if (auth.role === "SuperAdmin") {
+          router.push("/admin") // or your user dashboard
+       
+      
+    } 
+   }
+  }, [auth, router])
     
   const passwordSchemaOk = (pwd: string) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/.test(pwd)
 
