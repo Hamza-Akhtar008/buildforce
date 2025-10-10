@@ -25,7 +25,7 @@ import {
 } from "lucide-react"
 import { GetallUsers } from "@/lib/AdminApi/admin"
 
-
+const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
 const statusColors: Record<VerificationStatus, "default" | "secondary" | "destructive" | "outline"> = {
   pending: "outline",

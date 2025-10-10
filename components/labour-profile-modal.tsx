@@ -9,6 +9,7 @@ import { Separator } from "@/components/ui/separator"
 import type React from "react"
 import type { User } from "@/types/user"
 import { Eye, Download, FileText, Award as IdCard, BadgeCheck, FolderOpen, User2 } from "lucide-react"
+import { useEffect, useMemo, useState } from "react" // add state for tabs and effects
 
 type Props = {
   user: User
@@ -40,11 +41,33 @@ function isPdf(url: string) {
   }
 }
 
+function isImage(url: string) {
+  try {
+    const u = new URL(url)
+    return /\.(png|jpe?g|gif|webp|svg)$/i.test(u.pathname)
+  } catch {
+    return false
+  }
+}
+
 export function LabourProfileModal({ user, trigger, open, onOpenChange }: Props) {
   const profile = user.labourProfile
 
+  const availableKeys = useMemo(
+    () => (["resumeUrl", "idProofUrl", "certificateUrl", "portfolioUrl"] as FileKey[]).filter((k) => !!profile?.[k]),
+    [profile],
+  )
+  const [activeTab, setActiveTab] = useState<FileKey | undefined>(availableKeys[0])
+
+  useEffect(() => {
+    // reset when modal reopens or profile changes
+    setActiveTab(availableKeys[0])
+  }, [availableKeys, open])
+
+  const controlledProps = typeof open === "boolean" ? { open, onOpenChange } : {}
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog {...controlledProps}>
       {trigger ? <DialogTrigger asChild>{trigger}</DialogTrigger> : null}
       <DialogContent className="sm:max-w-3xl">
         <DialogHeader>
@@ -55,7 +78,6 @@ export function LabourProfileModal({ user, trigger, open, onOpenChange }: Props)
           <div className="text-muted-foreground">No profile submitted yet.</div>
         ) : (
           <div className="grid gap-6 md:grid-cols-5">
-            {/* Left: summary and file list */}
             <div className="md:col-span-2 space-y-4">
               <div className="flex items-center gap-3">
                 <div className="size-10 rounded-full bg-secondary grid place-items-center">
@@ -107,7 +129,7 @@ export function LabourProfileModal({ user, trigger, open, onOpenChange }: Props)
                       ["portfolioUrl", "Portfolio"],
                     ] as [FileKey, string][]
                   ).map(([key, label]) => {
-                    const href = profile[key]
+                    const href = profile[key as FileKey]
                     const disabled = !href
                     return (
                       <div
@@ -117,16 +139,21 @@ export function LabourProfileModal({ user, trigger, open, onOpenChange }: Props)
                         }`}
                       >
                         <div className="flex items-center gap-2">
-                          <FileIcon k={key} />
+                          <FileIcon k={key as FileKey} />
                           <span className="text-sm">{label}</span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <Button size="sm" variant="outline" asChild disabled={disabled} title="View in preview">
-                            <a href={`#${key}`}>
-                              <Eye className="size-4 mr-1.5" />
-                              View
-                            </a>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            disabled={disabled}
+                            title="View in preview"
+                            onClick={() => setActiveTab(key as FileKey)}
+                          >
+                            <Eye className="size-4 mr-1.5" />
+                            View
                           </Button>
+                          {/* download remains as anchor */}
                           <Button size="sm" variant="secondary" asChild disabled={disabled} title="Download file">
                             <a href={href || "#"} target="_blank" rel="noopener noreferrer" download>
                               <Download className="size-4 mr-1.5" />
@@ -143,7 +170,7 @@ export function LabourProfileModal({ user, trigger, open, onOpenChange }: Props)
 
             {/* Right: preview */}
             <div className="md:col-span-3">
-              <Tabs defaultValue="resumeUrl">
+              <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as FileKey)}>
                 <TabsList className="mb-3">
                   {profile.resumeUrl ? <TabsTrigger value="resumeUrl">Resume</TabsTrigger> : null}
                   {profile.idProofUrl ? <TabsTrigger value="idProofUrl">ID Proof</TabsTrigger> : null}
@@ -155,12 +182,19 @@ export function LabourProfileModal({ user, trigger, open, onOpenChange }: Props)
                   const url = profile[k]
                   if (!url) return null
                   const pdf = isPdf(url)
+                  const image = isImage(url)
                   const office = buildOfficePreview(url)
                   return (
                     <TabsContent key={k} value={k} className="border rounded-md overflow-hidden">
                       <ScrollArea className="h-[420px]">
                         <div className="bg-muted/20">
-                          {pdf ? (
+                          {image ? (
+                            <img
+                              src={url || "/placeholder.svg"}
+                              alt={`${k} preview`}
+                              className="w-full h-auto object-contain"
+                            />
+                          ) : pdf ? (
                             <iframe
                               src={url}
                               className="w-full h-[420px]"
