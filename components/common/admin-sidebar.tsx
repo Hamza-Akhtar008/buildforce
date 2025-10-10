@@ -14,6 +14,7 @@ import {
    Menu,
    X,
    Users,
+   FilePlus,
 } from "lucide-react";
 import { useState } from "react";
 import logo from "@/public/images/logo.png";
@@ -39,6 +40,11 @@ const sidebarItems = [
       title: "Add Project",
       href: "/admin/add-project",
       icon: Plus,
+   },
+   {
+      title: "Create Job",
+      href: "/admin/add-job",
+      icon: FilePlus, 
    },
    {
       title: "Applications",
