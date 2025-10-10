@@ -171,7 +171,7 @@ const dummyProjects = [
   },
 ];
 
-const page = () => {
+const Page = () => {
   const [projects, setProjects] = useState(dummyProjects);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("All");
@@ -407,43 +407,55 @@ const page = () => {
               {/* Employees Section */}
               <div className="mt-6 sm:mt-6 md:mt-8">
                 <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-3 sm:mb-4">
-                  Employees ({selectedProject.employees.length})
+                  Employees ({Array.isArray(selectedProject.employees) ? selectedProject.employees.length : selectedProject.employees})
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                  {selectedProject.employees.map((emp: any, idx: number) => (
-                    <div
-                      key={idx}
-                      className="flex items-center gap-3 bg-muted/20 rounded-lg p-3"
-                    >
-                      <img
-                        src={emp.image}
-                        alt={emp.name}
-                        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover"
-                      />
-                      <div>
-                        <p className="font-medium text-sm sm:text-base">{emp.name}</p>
-                        <p className="text-xs sm:text-sm text-muted-foreground">
-                          {emp.role}
-                        </p>
+                  {Array.isArray(selectedProject.employees) ? (
+                    selectedProject.employees.map((emp: any, idx: number) => (
+                      <div
+                        key={idx}
+                        className="flex items-center gap-3 bg-muted/20 rounded-lg p-3"
+                      >
+                        <img
+                          src={emp.image}
+                          alt={emp.name}
+                          className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover"
+                        />
+                        <div>
+                          <p className="font-medium text-sm sm:text-base">{emp.name}</p>
+                          <p className="text-xs sm:text-sm text-muted-foreground">
+                            {emp.role}
+                          </p>
+                        </div>
                       </div>
+                    ))
+                  ) : (
+                    <div className="text-muted-foreground p-3">
+                      {selectedProject.employees} Employees
                     </div>
-                  ))}
+                  )}
                 </div>
               </div>
               {/* Applications Section */}
               <div className="mt-6 sm:mt-6 md:mt-8">
                 <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-3 sm:mb-4">
-                  Applications ({selectedProject.applications.length})
+                  Applications ({Array.isArray(selectedProject.applications) ? selectedProject.applications.length : selectedProject.applications})
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                  {selectedProject.applications.map((app: any, idx: number) => (
-                    <div key={idx} className="bg-muted/20 rounded-lg p-3">
-                      <p className="font-medium text-sm sm:text-base">{app.name}</p>
-                      <p className="text-xs sm:text-sm text-muted-foreground">
-                        {app.role}
-                      </p>
+                  {Array.isArray(selectedProject.applications) ? (
+                    selectedProject.applications.map((app: any, idx: number) => (
+                      <div key={idx} className="bg-muted/20 rounded-lg p-3">
+                        <p className="font-medium text-sm sm:text-base">{app.name}</p>
+                        <p className="text-xs sm:text-sm text-muted-foreground">
+                          {app.role}
+                        </p>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-muted-foreground p-3">
+                      {selectedProject.applications} Applications
                     </div>
-                  ))}
+                  )}
                 </div>
               </div>
             </div>
@@ -453,4 +465,4 @@ const page = () => {
     </div>
   );
 };
-export default page;
+export default Page;
