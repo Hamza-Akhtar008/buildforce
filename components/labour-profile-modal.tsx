@@ -76,23 +76,34 @@ export function LabourProfileModal({ user, trigger, open, onOpenChange }: Props)
           <div className="font-medium leading-tight text-white">{user.name}</div>
           <div className="text-sm text-white/70">{user.email}</div>
 
-          {!!profile?.skills && (
-            <div className="mt-2 flex flex-wrap gap-2">
-              {profile.skills
-                .split(",")
-                .map((s) => s.trim())
-                .filter(Boolean)
-                .map((s, i) => (
-                  <Badge
-                    key={i}
-                    variant="secondary"
-                    className="bg-white/20 text-white backdrop-blur-sm border border-white/10"
-                  >
-                    {s}
-                  </Badge>
-                ))}
-            </div>
-          )}
+         {!!profile?.skills && (
+  <div className="mt-2 flex flex-wrap gap-2">
+    {(() => {
+      let skills = [];
+
+      try {
+        // Try parsing as JSON array
+        skills = JSON.parse(profile.skills);
+      } catch {
+        // Fallback if it's a comma-separated string
+        skills = profile.skills.split(",").map((s) => s.trim());
+      }
+
+      return skills
+        .filter(Boolean)
+        .map((s, i) => (
+          <Badge
+            key={i}
+            variant="secondary"
+            className="bg-white/20 text-white backdrop-blur-sm border border-white/10"
+          >
+            {s}
+          </Badge>
+        ));
+    })()}
+  </div>
+)}
+
         </div>
       </div>
     </div>
