@@ -14,14 +14,36 @@ import {
 import { useRouter } from "next/navigation";
 import { useGlobalContext } from "@/contexts/globalContext";
 import { Button } from "../ui/button";
+import { FetchUSer } from "@/lib/UserApi/user";
+import { useAuth } from "@/contexts/AuthContext";
+import { User as user } from "@/types";
+
+
 
 export function Header({ children }: { children?: ReactNode }) {
    const router = useRouter();
+const {auth,logout} =useAuth();
 
    const handleLogout = () => {
       // Clear any stored user data/tokens here if needed
+      logout();
       router.push("/auth/signin");
    };
+ const [user, setUser] = useState<user | null>(null);
+
+
+
+   useEffect(()=>
+   
+   {
+      const fetchuser = async ()=>
+      {
+
+         const response = await FetchUSer(auth?.id);
+         setUser(response);
+      }
+      fetchuser();
+   },[])
 
    const handleProfile = () => {
       router.push("/profile");
@@ -85,9 +107,8 @@ export function Header({ children }: { children?: ReactNode }) {
             </div> */}
             <DropdownMenu>
                <DropdownMenuTrigger asChild>
-                  <Avatar className="h-10 w-10 cursor-pointer hover:ring-2 hover:ring-primary hover:ring-offset-2 transition-all">
-                     <AvatarImage src="https://github.com/shadcn.png" />
-                     <AvatarFallback className="text-sm">JD</AvatarFallback>
+                    <Avatar className="h-10 w-10 cursor-pointer  transition-all">
+                     <User className="h-6 w-6 text-primary" />
                   </Avatar>
                </DropdownMenuTrigger>
                <DropdownMenuContent
@@ -97,18 +118,15 @@ export function Header({ children }: { children?: ReactNode }) {
                >
                   <DropdownMenuLabel className="font-normal p-4 pb-2">
                      <div className="flex items-center space-x-3">
-                        <Avatar className="h-10 w-10">
-                           <AvatarImage src="https://github.com/shadcn.png" />
-                           <AvatarFallback className="bg-primary text-primary-foreground">
-                              JD
-                           </AvatarFallback>
-                        </Avatar>
+                          <Avatar className="h-10 w-10 cursor-pointer  transition-all">
+                     <User className="h-6 w-6 text-primary" />
+                  </Avatar>
                         <div className="flex flex-col space-y-1">
                            <p className="text-sm font-semibold leading-none text-foreground">
-                              Jhone Doe
+                              {user?.name || "User Name"}
                            </p>
                            <p className="text-xs text-muted-foreground">
-                              Labor - Carpenter
+                             {user?.role}
                            </p>
                            <Badge
                               variant="outline"

@@ -11,7 +11,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { notifyError, notifySuccess } from "@/lib/toast";
 
 export default function SelectInterviewPage() {
-  const { auth } = useAuth();
+  const { auth,loading } = useAuth();
   const router = useRouter();
 
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
@@ -19,46 +19,69 @@ export default function SelectInterviewPage() {
   const [availableDates, setAvailableDates] = useState<Date[]>([]);
   const [availableTimes, setAvailableTimes] = useState<string[]>([]);
   const [interviewid , setInterviewid] = useState<number | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loadingdata, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchInterview = async () => {
-      setLoading(true);
-      try {
-        const response = await FetchInterview(auth?.id || 0);
+useEffect(() => {
+  const fetchInterview = async () => {
+    setLoading(true);
+    try {
+      const response = await FetchInterview(auth?.id || 0);
 
-        if (response && typeof response === "object") {
-          // Parse available dates (comma-separated string)
-          console.log("FetchInterview response:", response);
-          setInterviewid(response[0].id || null);
-          const dateStrings = (response[0].date || "")
-            .split(",")
-            .map((d: string) => d.trim())
-            
-console.log("Fetched date strings:", dateStrings);
-          const parsedDates = dateStrings.map((d: string) => {
-            const [day, month, year] = d.split("-");
-            return new Date(`${year}-${month}-${day}`);
-          });
+      if (response && Array.isArray(response)) {
+        console.log("FetchInterview response:", response);
 
-          // Parse available time slots
-          const parsedTimes = (response[0].timeSlots || "")
-            .split(",")
-            .map((t: string) => t.trim())
-            .filter(Boolean);
+        // ✅ Filter by logged-in user's ID
+        const filtered = response.filter((item) => item.candidateId === auth?.id);
+        console.log("Filtered interview data:", filtered);
 
-          setAvailableDates(parsedDates);
-          setAvailableTimes(parsedTimes);
+        // ✅ Get the first matching interview (if any)
+        const interview = filtered[0];
+        if (!interview) {
+          console.log("No interview found for this user.");
+          setAvailableDates([]);
+          setAvailableTimes([]);
+          setInterviewid(null);
+          return;
         }
-      } catch (error) {
-        console.error("Error fetching interview data:", error);
-      } finally {
-        setLoading(false);
+
+        // ✅ Extract data safely
+        setInterviewid(interview.id || null);
+
+        // Parse available dates (comma-separated string)
+        const dateStrings = (interview.date || "")
+          .split(",")
+          .map((d: string) => d.trim())
+          .filter(Boolean);
+
+        console.log("Fetched date strings:", dateStrings);
+
+        const parsedDates = dateStrings.map((d: string) => {
+          const [year, month, day] = d.split("-"); // your date format looks like "2025-10-12"
+          return new Date(`${year}-${month}-${day}`);
+        });
+
+        // Parse available time slots
+        const parsedTimes = (interview.timeSlots || "")
+          .split(",")
+          .map((t: string) => t.trim())
+          .filter(Boolean);
+
+        setAvailableDates(parsedDates);
+        setAvailableTimes(parsedTimes);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching interview data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if(loading === false && auth?.id){
 
     fetchInterview();
-  }, [auth?.id]);
+  }
+}, [loading, auth?.id]);
+
 
   const isDateSelectable = (date: Date) =>
     availableDates.some((d) => d.toDateString() === date.toDateString());
@@ -88,7 +111,7 @@ console.log("Fetched date strings:", dateStrings);
       day: "numeric",
     });
 
-  if (loading) {
+  if (loadingdata) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-background text-foreground">
         <Loader2 className="h-10 w-10 text-primary animate-spin mb-4" />

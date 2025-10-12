@@ -47,36 +47,56 @@ export function UsersTable() {
   const [statusOverrides, setStatusOverrides] = useState<Record<number, VerificationStatus>>({})
   const [q, setQ] = useState("")
   const [filterStatus, setFilterStatus] = useState<VerificationStatus | "all">("all")
+const users = useMemo<User[] | undefined>(() => {
+  if (!data) return data;
 
-  const users = useMemo<User[] | undefined>(() => {
-    if (!data) return data
-    const merged = data.map((u) => ({
-      ...u,
-      verificationStatus: statusOverrides[u.id] ?? u.verificationStatus,
-    }))
-    const filtered = filterStatus === "all" ? merged : merged.filter((u) => u.verificationStatus === filterStatus)
-    const searched = q
-      ? filtered.filter(
-          (u) =>
-            u.name.toLowerCase().includes(q.toLowerCase()) ||
-            u.email.toLowerCase().includes(q.toLowerCase()) ||
-            String(u.id).includes(q),
-        )
-      : filtered
-    return searched
-  }, [data, statusOverrides, q, filterStatus])
+  const merged = data.map((u) => ({
+    ...u,
+    verificationStatus: statusOverrides[u.id] ?? u.verificationStatus,
+  }));
+
+  const filtered =
+    filterStatus === "all"
+      ? merged
+      : merged.filter((u) => u.verificationStatus === filterStatus);
+
+  const searched = q
+    ? filtered.filter(
+        (u) =>
+          u.name.toLowerCase().includes(q.toLowerCase()) ||
+          u.email.toLowerCase().includes(q.toLowerCase()) ||
+          String(u.id).includes(q),
+      )
+    : filtered;
+
+  // ✅ Sort by latest updatedAt (descending)
+  const sorted = [...searched].sort(
+    (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
+  );
+
+  return sorted;
+}, [data, statusOverrides, q, filterStatus]);
+
 
   if (isLoading) return <div className="text-muted-foreground">Loading users…</div>
   if (error) return <div className="text-destructive">Error loading users.</div>
 
-  const setStatus =async (id: number, status: VerificationStatus) =>{
-    setStatusOverrides((prev) => ({ ...prev, [id]: status }))
+ const setStatus = async (id: number, status: VerificationStatus) => {
+  setStatusOverrides((prev) => ({ ...prev, [id]: status }));
 
-    const response = await UpdateStatus(id,status)
-    if(response)
-    notifySuccess(`User ${id} marked as ${status}`);
+  const response = await UpdateStatus(id, status);
 
+  if (response) {
+    // ✅ Find user by ID
+    const user = users?.find((u) => u.id === id);
+
+    // ✅ Use name if available, fallback to ID
+    const displayName = user?.name ?? `User ${id}`;
+
+    notifySuccess(`${displayName} marked as ${status}`);
   }
+};
+
 
   return (
     <div className="rounded-lg border">
@@ -133,6 +153,8 @@ export function UsersTable() {
         <th>User</th>
         <th>Email</th>
         <th>Role</th>
+        <th>Address</th>
+
         <th>Status</th>
         <th className="w-[360px]">Actions</th>
       </tr>
@@ -188,6 +210,7 @@ export function UsersTable() {
               </div>
             </td>
             <td className="px-4 py-3 text-white/80">{user.role}</td>
+  <td className="px-4 py-3 text-white/80">{user.location}</td>
             <td className="px-4 py-3">
               <div className="flex items-center gap-2">
                 {statusIcon}
@@ -196,6 +219,9 @@ export function UsersTable() {
                 </Badge>
               </div>
             </td>
+
+
+            
             <td className="px-4 py-3">
               <div className="flex flex-wrap items-center gap-2">
                 <LabourProfileModal

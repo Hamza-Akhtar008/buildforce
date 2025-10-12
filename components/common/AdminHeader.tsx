@@ -24,7 +24,7 @@ const {logout } = useAuth();
    };
 
    const handleSettings = () => {
-      router.push("/admin/settings");
+      router.push("/admin/profile");
    };
 
    return (
@@ -34,9 +34,8 @@ const {logout } = useAuth();
          <div className="flex items-center gap-4">
             <DropdownMenu>
                <DropdownMenuTrigger asChild>
-                  <Avatar className="h-10 w-10 cursor-pointer hover:ring-2 hover:ring-primary hover:ring-offset-2 transition-all">
-                     <AvatarImage src="https://github.com/shadcn.png" />
-                     <AvatarFallback className="text-sm">AD</AvatarFallback>
+                   <Avatar className="h-10 w-10 cursor-pointer  transition-all">
+                     <User className="h-6 w-6 text-primary" />
                   </Avatar>
                </DropdownMenuTrigger>
                <DropdownMenuContent
@@ -46,35 +45,29 @@ const {logout } = useAuth();
                >
                   <DropdownMenuLabel className="font-normal p-4 pb-2">
                      <div className="flex items-center space-x-3">
-                        <Avatar className="h-10 w-10">
-                           <AvatarImage src="https://github.com/shadcn.png" />
-                           <AvatarFallback className="bg-primary text-primary-foreground">
-                              AD
-                           </AvatarFallback>
-                        </Avatar>
+                        <Avatar className="h-10 w-10 cursor-pointer  transition-all">
+                     <User className="h-6 w-6 text-primary" />
+                  </Avatar>
                         <div className="flex flex-col space-y-1">
                            <p className="text-sm font-semibold leading-none text-foreground">
                               Admin User
                            </p>
                            <p className="text-xs text-muted-foreground">
-                              System Administrator
+                              BuildForce Owner
                            </p>
                            <Badge
                               variant="outline"
                               className="w-fit text-xs mt-1 border-primary/20 text-primary bg-primary/5"
                            >
                               <CheckCircle className="w-3 h-3 mr-1" />
-                              Admin
+                              Super Admin
                            </Badge>
                         </div>
                      </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator className="my-2" />
                   <div className="p-1">
-                     <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-sm hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary transition-colors">
-                        <User className="mr-3 h-4 w-4 text-muted-foreground" />
-                        <span className="font-medium">Name</span>
-                     </DropdownMenuItem>
+                   
                      <DropdownMenuItem
                         onClick={handleSettings}
                         className="cursor-pointer rounded-md px-3 py-2 text-sm hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary transition-colors"

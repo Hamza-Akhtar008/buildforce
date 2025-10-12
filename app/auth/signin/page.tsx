@@ -48,53 +48,61 @@ export default function SignInPage() {
    }
   }, [auth, router])
   
-   const handlelogin = async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault(); // stop form from refreshing the page
-      if(!Email)
-      {
- notifyError("Please Enter Email");
-      }
-      if(!password)
-      {
-          notifyError("Please Enter Password");
-      }
-      const payload = {
-         email:Email,
-         password:password,
-      }
-const response = await LoginUser(payload);
-if(response)
-{
+  const handlelogin = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
 
-  console.log(response);
-  
-  notifySuccess("Login Succesfully");
-  login(response)
-  if(response.role=="Labour")
-   {
-    if(response.verificationStatus=="pending")
-      {
+  // ✅ Frontend validation
+  if (!Email) {
+    notifyError("Please enter your email");
+    return;
+  }
+  if (!password) {
+    notifyError("Please enter your password");
+    return;
+  }
 
-     
-         router.push("/unverified/skills-selection");
+  const payload = {
+    email: Email,
+    password: password,
+  };
+
+  try {
+    const response = await LoginUser(payload);
+
+    // ✅ Check if API returned a valid response
+    if (response?.statusCode === 200 || response?.access_token) {
+      notifySuccess("Login Successful");
+      login(response);
+
+      // ✅ Conditional routing based on role & verification
+      if (response.role === "Labour") {
+        if (response.verificationStatus === "pending") {
+          router.push("/unverified/skills-selection");
+        } else {
+          router.push("/unverified/select-interview");
+        }
+      } else {
+        router.push("/admin");
       }
-      else{
+    } else {
+      // ✅ Show backend message if available
+      notifyError(
+        response?.message ||
+          response?.error ||
+          "Login failed. Please check your credentials."
+      );
+    }
+  } catch (error: any) {
+    // ✅ Handle network or unexpected errors
+    const errorMessage =
+      error?.response?.data?.message ||
+      error?.message ||
+      "Unable to login. Please try again later.";
 
-         router.push("/unverified/select-interview");
-      }  
-   }
-   else
-   {
-      router.push("/admin");
+    notifyError(errorMessage);
+  }
+};
 
-   }
-}
-else
-{
-      notifyError("Login Failed");
-}
-      
-   };
    return (
       <div className="min-h-screen bg-background text-foreground">
          {/* Desktop Layout */}

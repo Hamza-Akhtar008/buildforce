@@ -86,12 +86,7 @@ export default function ProfileSubmitted({ profile }: { profile: Profile }) {
           </div>
         </section>
 
-        <div className="flex items-center justify-between">
-          <Link href="/" className="text-sm underline underline-offset-4 text-muted-foreground">
-            Go back home
-          </Link>
-          <Button className="bg-primary text-primary-foreground hover:opacity-90">Done</Button>
-        </div>
+     
       </CardContent>
     </Card>
   )

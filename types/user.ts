@@ -15,7 +15,7 @@ export type LabourProfile = {
   skills: string | null
 }
 
-export type User = {
+export interface User  {
   id: number
   name: string
   phone?: string

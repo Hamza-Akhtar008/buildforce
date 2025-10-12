@@ -102,29 +102,44 @@ const {auth} = useAuth();
     return true
   }
 
-  const handleRegisterClick = async () => {
-    if (!validateRegisterState()) return
-    const payload = {
-      name:Fullname,
-      email:Email,
-      phone:phoneNumber,
-      location: `${location.region},${location.state},${location.county}`,
-      password:Password,
-      role: UserRole.LABOUR
-    }
-    
-const response =await  RegisterUSer(payload);
-  if(response)
-  {
-    notifySuccess("Registration Succefull")
+const handleRegisterClick = async () => {
+  if (!validateRegisterState()) return;
 
+  const payload = {
+    name: Fullname,
+    email: Email,
+    phone: phoneNumber,
+    location: `${location.region},${location.state},${location.county}`,
+    password: Password,
+    role: UserRole.LABOUR,
+  };
+
+  try {
+    const response = await RegisterUSer(payload);
+
+    // ✅ If backend explicitly returns success
+    if (response?.statusCode === 201) {
+      notifySuccess("Registration Successful");
+      router.push("/auth/signin");
+    } else {
+      // ✅ Show backend-provided message if available
+      notifyError(
+        response?.message ||
+          response?.error ||
+          "Registration failed. Please try again."
+      );
+    }
+  } catch (error: any) {
+    // ✅ Handle network or unexpected server errors gracefully
+    const errorMessage =
+      error?.response?.data?.message ||
+      error?.message ||
+      "Something went wrong. Please try again later.";
+
+    notifyError(errorMessage);
   }
-  else{
-    notifyError("Registration Failed")
-  }
-    // setShowOTP(true)
-    // toast.success("Verification code sent to your phone")
-  }
+};
+
 
   const handleOTPClick = async () => {
     if (otpValue.length !== 6) {

@@ -156,7 +156,7 @@ const handleContinue = async () => {
     const res = await RegisterProfile(form)
     if (res) {
       notifySuccess("Profile Created Successfully")
-      router.push("/unverified/preinterview-project-showcase")
+      router.push("/unverified/document-submitted")
     } else {
       notifyError("Profile Creation Failed")
     }
