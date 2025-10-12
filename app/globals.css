@@ -76,6 +76,10 @@
    --sidebar-accent-foreground: #000000;
    --sidebar-border: #e5e5e5;
    --sidebar-ring: #cb9c2c;
+   --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-border: rgba(229, 229, 229, 0.4);
+  --glass-shadow: rgba(0, 0, 0, 0.05);
+  --glass-highlight: rgba(255, 255, 255, 0.25);
 }
 
 .dark {
@@ -110,6 +114,10 @@
    --sidebar-accent-foreground: #ffffff;
    --sidebar-border: #525252;
    --sidebar-ring: #cb9c2c;
+   --glass-bg: rgba(34, 34, 34, 0.55);
+  --glass-border: rgba(82, 82, 82, 0.4);
+  --glass-shadow: rgba(0, 0, 0, 0.25);
+  --glass-highlight: rgba(255, 255, 255, 0.1);
 }
 
 @layer base {

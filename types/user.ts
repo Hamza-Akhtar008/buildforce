@@ -2,7 +2,7 @@ export type UserRole = "admin" | "Labour" | "contractor";
 
 export type AccessLevel = "basic" | "advanced";
 
-export type VerificationStatus = "pending" | "submitted" | "interview" | "approved" | "rejected"
+export type VerificationStatus = "pending" | "submitted" | "interview"|"interview_fixed" |"interviewed"| "verified" | "rejected"
 
 export type LabourProfile = {
   id: number

@@ -27,6 +27,8 @@ import {
   Inbox,
 } from "lucide-react"
 import { GetallUsers } from "@/lib/AdminApi/admin"
+import { UpdateStatus } from "@/lib/UserApi/user"
+import { notifySuccess } from "@/lib/toast"
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
@@ -34,7 +36,9 @@ const statusColors: Record<VerificationStatus, "default" | "secondary" | "destru
   pending: "outline",
   submitted: "secondary",
   interview: "default",
-  approved: "default",
+  interview_fixed: "default",
+  interviewed: "default",
+  verified: "default",
   rejected: "destructive",
 }
 
@@ -65,8 +69,14 @@ export function UsersTable() {
   if (isLoading) return <div className="text-muted-foreground">Loading users…</div>
   if (error) return <div className="text-destructive">Error loading users.</div>
 
-  const setStatus = (id: number, status: VerificationStatus) =>
+  const setStatus =async (id: number, status: VerificationStatus) =>{
     setStatusOverrides((prev) => ({ ...prev, [id]: status }))
+
+    const response = await UpdateStatus(id,status)
+    if(response)
+    notifySuccess(`User ${id} marked as ${status}`);
+
+  }
 
   return (
     <div className="rounded-lg border">
@@ -133,7 +143,7 @@ export function UsersTable() {
         const hasProfile = !!user.labourProfile
         const canViewProfile =
           hasProfile &&
-          (status === "submitted" || status === "interview" || status === "approved" || status === "rejected")
+          (status === "submitted" || status === "interview" || status === "verified" || status === "rejected")
         const canSchedule = status === "submitted"
 
         const resume = user.labourProfile?.resumeUrl
@@ -148,7 +158,7 @@ export function UsersTable() {
             <Inbox className="size-4 text-blue-400" />
           ) : status === "interview" ? (
             <CalendarClock className="size-4 text-indigo-400" />
-          ) : status === "approved" ? (
+          ) : status === "verified" ? (
             <CheckCircle2 className="size-4 text-emerald-400" />
           ) : (
             <XCircle className="size-4 text-rose-400" />
@@ -206,7 +216,7 @@ export function UsersTable() {
                 <Button
                   size="sm"
                   variant="ghost"
-                  onClick={() => setStatus(user.id, "approved")}
+                  onClick={() => setStatus(user.id, "verified")}
                   title="Approve"
                   className="text-emerald-400 hover:bg-emerald-400/20"
                 >

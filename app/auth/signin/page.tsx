@@ -32,6 +32,14 @@ export default function SignInPage() {
          {
               router.push("/unverified/document-submitted");
          }
+         else if (auth.verificationStatus=="interview")
+         {
+            router.push("/unverified/select-interview");
+         }
+         else if(auth.verificationStatus=="verified")
+         {
+            router.push("/Dashboard");
+         }
         } else if (auth.role === "Admin") {
           router.push("/admin") // or your user dashboard
        
@@ -103,6 +111,7 @@ else
 
                <div className="text-center mb-8">
                   <h1 className="text-3xl font-bold mb-2">Welcome back</h1>
+                  
                   <p className="text-muted-foreground">
                      Sign in to your account to continue
                   </p>
