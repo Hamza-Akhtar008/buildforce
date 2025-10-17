@@ -118,17 +118,10 @@ const handleRegisterClick = async () => {
     const response = await RegisterUSer(payload);
 
     // ✅ If backend explicitly returns success
-    if (response?.statusCode === 201) {
+  
       notifySuccess("Registration Successful");
       router.push("/auth/signin");
-    } else {
-      // ✅ Show backend-provided message if available
-      notifyError(
-        response?.message ||
-          response?.error ||
-          "Registration failed. Please try again."
-      );
-    }
+   
   } catch (error: any) {
     // ✅ Handle network or unexpected server errors gracefully
     const errorMessage =
