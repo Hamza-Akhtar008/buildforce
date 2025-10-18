@@ -186,7 +186,7 @@ export function UsersTable() {
       : filteredByStatus.filter((u) => {
           const { state } = parseLocation(u.location || "")
           const selectedState = states.find((s) => s.isoCode === filterState)
-          return selectedState?.name?.toLowerCase() === state.toLowerCase()
+          return selectedState?.isoCode?.toLowerCase() === state.toLowerCase()
         })
 
   // Apply county filter
