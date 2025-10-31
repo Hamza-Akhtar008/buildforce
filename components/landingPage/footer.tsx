@@ -45,7 +45,7 @@ export default function Footer() {
 
 
   return (
-    <div className='py-17.5 px-20'>
+    <div className='py-17.5 px-20 bg-[#161616] rounded-[42px] mt-20'>
       <div className='text-card'>
         <div className='flex gap-6 items-center'>
           <Image src="/images/logo.png" alt="BuildForce Logo" width={50} height={47} className=''/>
