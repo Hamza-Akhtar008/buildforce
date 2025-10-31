@@ -3,24 +3,26 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { GlobalContextProvider } from "@/contexts/globalContext";
+import Hero from "@/components/landingPage/hero";
+import Header from "@/components/landingPage/header";
+import Footer from "@/components/landingPage/footer";
 
 export default function HomePage() {
    const router = useRouter();
 
-   useEffect(() => {
-      if (localStorage.getItem("selectedLanguage")) {
-         router.push("/auth/register");
-      } else {
-         router.push("/auth/language-select");
-      }
-   }, [router]);
+   // useEffect(() => {
+   //    if (localStorage.getItem("selectedLanguage")) {
+   //       router.push("/auth/register");
+   //    } else {
+   //       router.push("/auth/language-select");
+   //    }
+   // }, [router]);
 
    return (
-      <div className="min-h-screen bg-background text-foreground flex items-center justify-center">
-         <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-            <p className="mt-4 text-muted-foreground">Loading...</p>
-         </div>
-      </div>
+     <div className="bg-[#222222] py-10 px-25 flex flex-col gap-8">
+      <Header />
+      <Hero />
+      <Footer />
+     </div>
    );
 }
