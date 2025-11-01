@@ -133,3 +133,4 @@
 [data-radix-popper-content-wrapper] {
   z-index: 50; /* or higher than your navbar/table */
 }
+
