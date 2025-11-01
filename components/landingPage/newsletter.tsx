@@ -33,7 +33,8 @@ export function Newsletter() {
           <p className="text-gray-400 text-lg mb-8">Subscribe for the latest real estate news and insights</p>
 
           {/* Email Form */}
-          <form onSubmit={handleSubmit} className="flex gap-0 rounded-full bg-slate-800 border border-slate-700 p-1">
+          <div className="max-w-sm">
+          <form onSubmit={handleSubmit} className="flex gap-0 rounded-full border border-slate-700 p-1">
             <input
               type="email"
               placeholder="Enter your email address"
@@ -49,7 +50,7 @@ export function Newsletter() {
               Submit
             </button>
           </form>
-
+        </div>
           {submitted && <p className="text-amber-500 text-sm mt-4">Thank you for subscribing!</p>}
         </div>
 
