@@ -1,38 +1,22 @@
-export default function Sidebar() {
-  const jobs = [
-    {
-      title: "Apprentice Electrician - Commercial",
-      location: "Houston, TX 77070 US",
-      pay: "$40 - Midlevel",
-      experience: "+ Experience",
-    },
-    {
-      title: "Apprentice Electrician - Commercial",
-      location: "Houston, TX 77070 US",
-      pay: "$40 - Midlevel",
-      experience: "+ Experience",
-    },
-    {
-      title: "Apprentice Electrician - Commercial",
-      location: "Houston, TX 77070 US",
-      pay: "$40 - Midlevel",
-      experience: "+ Experience",
-    },
-    {
-      title: "Apprentice Electrician - Commercial",
-      location: "Houston, TX 77070 US",
-      pay: "$40 - Midlevel",
-      experience: "+ Experience",
-    },
-  ]
+"use client";
 
+import { Job } from "@/types/job";
+
+interface SidebarProps {
+  jobs: Job[];
+  onSelectJob: (job: Job) => void;
+}
+
+export default function Sidebar({ jobs = [], onSelectJob }: SidebarProps) {
   return (
     <div className="max-w-2xl bg-[#161616] rounded-[42px] py-20 px-4 max-h-[1200px] overflow-y-auto">
       <h2 className="mb-8 text-xl font-semibold">Search Jobs</h2>
 
       {/* Project Duration */}
       <div className="mb-8">
-        <label className="mb-4 block text-sm font-semibold text-gray-300">Estimated project duration</label>
+        <label className="mb-4 block text-sm font-semibold text-gray-300">
+          Estimated project duration
+        </label>
         <div className="space-y-3">
           <label className="flex items-center gap-2 cursor-pointer">
             <input type="radio" name="duration" className="accent-yellow-600" />
@@ -50,8 +34,10 @@ export default function Sidebar() {
       </div>
 
       {/* Minimum Pay Rate */}
-      <div className="mb-8 ">
-        <label className="mb-2 block text-sm font-semibold text-[gray]-300">Minimum pay rate</label>
+      <div className="mb-8">
+        <label className="mb-2 block text-sm font-semibold text-gray-300">
+          Minimum pay rate
+        </label>
         <input
           type="text"
           placeholder="$"
@@ -71,20 +57,27 @@ export default function Sidebar() {
 
       {/* Job Listings */}
       <div className="space-y-4">
-        {jobs.map((job, idx) => (
-          <div
-            key={idx}
-            className=" border border-gray-700 bg-[#2F2F2F] rounded-[22px] p-3 hover:bg-gray-800 transition-colors cursor-pointer"
-          >
-            <h4 className="mb-2 text-sm font-semibold text-[#CEA134]">{job.title}</h4>
-            <div className="space-y-1 text-xs text-gray-400">
-              <p>{job.location}</p>
-              <p>{job.pay}</p>
-              <p>{job.experience}</p>
+        {jobs.length === 0 ? (
+          <p className="text-gray-500 text-sm">No jobs available</p>
+        ) : (
+          jobs.map((job) => (
+            <div
+              key={job.id}
+              onClick={() => onSelectJob(job)}
+              className="border border-gray-700 bg-[#2F2F2F] rounded-[22px] p-3 hover:bg-gray-800 transition-colors cursor-pointer"
+            >
+              <h4 className="mb-2 text-sm font-semibold text-[#CEA134]">
+                {job.title}
+              </h4>
+              <div className="space-y-1 text-xs text-gray-400">
+                <p>{job.location || "Location unavailable"}</p>
+                <p>{job.salary || "Pay not specified"}</p>
+                <p>{job.skillLevel || "Experience required"}</p>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
-  )
+  );
 }
