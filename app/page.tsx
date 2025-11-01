@@ -12,12 +12,14 @@ import { ManageField } from "@/components/landingPage/manage-field";
 import { Testimonials } from "@/components/landingPage/testimonials";
 import { FAQ } from "@/components/landingPage/faq";
 import { Newsletter } from "@/components/landingPage/newsletter";
+import Image from "next/image";
+
 const expertData = [
   {
     id: "1",
     name: "Adam J.",
     location: "Austin",
-    image: "https://api.dicebear.com/9.x/avataaars/svg?seed=Adam1",
+    image: "/images/employees/emp1.svg",
     badge: "All-Star\nWould Rehire",
     projects: 3,
     hours: 534,
@@ -27,7 +29,7 @@ const expertData = [
     id: "2",
     name: "Adam J.",
     location: "Austin",
-    image: "https://api.dicebear.com/9.x/avataaars/svg?seed=Adam2",
+    image: "/images/employees/emp2.svg",
     badge: "All-Star\nWould Rehire",
     projects: 3,
     hours: 534,
@@ -37,7 +39,7 @@ const expertData = [
     id: "3",
     name: "Adam J.",
     location: "Austin",
-    image: "https://api.dicebear.com/9.x/avataaars/svg?seed=Adam3",
+    image: "/images/employees/emp3.svg",
     badge: "All-Star\nWould Rehire",
     projects: 3,
     hours: 534,
@@ -47,7 +49,7 @@ const expertData = [
     id: "4",
     name: "Adam J.",
     location: "Austin",
-    image: "https://api.dicebear.com/9.x/avataaars/svg?seed=Adam4",
+    image: "/images/employees/emp4.svg",
     badge: "All-Star\nWould Rehire",
     projects: 3,
     hours: 534,
@@ -57,7 +59,7 @@ const expertData = [
     id: "5",
     name: "Adam J.",
     location: "Austin",
-    image: "https://api.dicebear.com/9.x/avataaars/svg?seed=Adam5",
+    image: "/images/employees/emp5.svg",
     badge: "All-Star\nWould Rehire",
     projects: 3,
     hours: 534,
@@ -67,7 +69,7 @@ const expertData = [
     id: "6",
     name: "Adam J.",
     location: "Austin",
-    image: "https://api.dicebear.com/9.x/avataaars/svg?seed=Adam6",
+    image: "/images/employees/emp6.svg",
     badge: "All-Star\nWould Rehire",
     projects: 3,
     hours: 534,
