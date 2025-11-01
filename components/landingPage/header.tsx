@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link';
 
 interface MenuItem {
   label: string;
@@ -16,18 +17,11 @@ const menuItems: MenuItem[] = [
       { label: 'Contractor Services', href: '/contractor-services' }
     ]
   },
+
   {
-    label: 'Solutions',
+    label: 'Labours',
     subItems: [
-      { label: 'Project Management', href: '/solutions/project-management' },
-      { label: 'Workforce Management', href: '/solutions/workforce' },
-      { label: 'Safety & Compliance', href: '/solutions/safety' }
-    ]
-  },
-  {
-    label: 'Electricians',
-    subItems: [
-      { label: 'Find Jobs', href: '/electrician-jobs' },
+      { label: 'Find Jobs', href: '/job-board' },
       { label: 'Training', href: '/electrician-training' },
       { label: 'Certification', href: '/electrician-certification' }
     ]
@@ -47,7 +41,9 @@ export default function Header() {
     <div className='bg-[#161616] rounded-full py-5 px-10'>
         <div className='flex justify-between'>
             <div>
+              <Link href="/">
                 <Image src="/images/logo.png" alt="BuildForce Logo" width={50} height={47} className=''/>
+              </Link>
             </div>
             <div>
                   <nav className="ml-10 flex items-center space-x-8">
