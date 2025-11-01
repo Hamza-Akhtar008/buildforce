@@ -1,170 +1,84 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, FolderOpen, Search, Plus } from "lucide-react";
-import { Project, ProjectStatus } from "@/types";
+import { ArrowLeft, FolderOpen, Search, Plus, Loader2 } from "lucide-react";
+import { ProjectStatus } from "@/lib/AdminApi/admin";
 import { ProjectItem } from "@/components/custom/project-item";
-import { subDays, subWeeks, subMonths } from "date-fns";
 
 export default function ProjectManagement() {
    const [searchQuery, setSearchQuery] = useState("");
    const [activeTab, setActiveTab] = useState<"all" | ProjectStatus>("all");
+   const [projects, setProjects] = useState<any[]>([]);
+   const [loading, setLoading] = useState(true);
 
-   // Dummy projects data
-   const projects: Project[] = [
-      {
-         id: "1",
-         name: "Downtown Office Complex",
-         location: "New York, NY",
-         workerCount: 45,
-         startDate: subDays(new Date(), 30),
-         status: "active",
-         projectType: "commercial",
-         endDate: new Date(2024, 11, 15),
-         description: "Modern office complex with sustainable features",
-         projectManager: "Sarah Wilson",
-         createdAt: subDays(new Date(), 45),
-         updatedAt: new Date(),
-      },
-      {
-         id: "2",
-         name: "Residential Tower A",
-         location: "Los Angeles, CA",
-         workerCount: 32,
-         startDate: subDays(new Date(), 60),
-         status: "active",
-         projectType: "commercial",
-         endDate: new Date(2025, 2, 20),
-         description: "Luxury residential tower with amenities",
-         projectManager: "Mike Johnson",
-         createdAt: subDays(new Date(), 75),
-         updatedAt: new Date(),
-      },
-      {
-         id: "3",
-         name: "Shopping Mall Renovation",
-         location: "Chicago, IL",
-         workerCount: 28,
-         startDate: subWeeks(new Date(), 2),
-         status: "pending",
-         projectType: "commercial",
-         endDate: new Date(2024, 10, 30),
-         description: "Complete renovation of existing shopping mall",
-         projectManager: "Emily Davis",
-         createdAt: subWeeks(new Date(), 3),
-         updatedAt: new Date(),
-      },
-      {
-         id: "4",
-         name: "Community Center Build",
-         location: "Austin, TX",
-         workerCount: 18,
-         startDate: subDays(new Date(), 90),
-         status: "hold",
-         projectType: "local",
-         endDate: new Date(2024, 12, 10),
-         description: "New community center for local residents",
-         projectManager: "David Martinez",
-         createdAt: subDays(new Date(), 100),
-         updatedAt: new Date(),
-      },
-      {
-         id: "5",
-         name: "Bridge Reconstruction",
-         location: "Seattle, WA",
-         workerCount: 55,
-         startDate: subDays(new Date(), 15),
-         status: "active",
-         projectType: "local",
-         endDate: new Date(2025, 1, 15),
-         description: "Major bridge reconstruction project",
-         projectManager: "Jennifer Taylor",
-         createdAt: subDays(new Date(), 25),
-         updatedAt: new Date(),
-      },
-      {
-         id: "6",
-         name: "School Extension",
-         location: "Denver, CO",
-         workerCount: 22,
-         startDate: subDays(new Date(), 5),
-         status: "pending",
-         projectType: "local",
-         endDate: new Date(2024, 11, 25),
-         description: "Extension of existing elementary school",
-         projectManager: "Robert Brown",
-         createdAt: subDays(new Date(), 10),
-         updatedAt: new Date(),
-      },
-      {
-         id: "7",
-         name: "Hospital Wing Addition",
-         location: "Miami, FL",
-         workerCount: 38,
-         startDate: subMonths(new Date(), 2),
-         status: "active",
-         projectType: "commercial",
-         endDate: new Date(2025, 3, 30),
-         description: "New wing addition to general hospital",
-         projectManager: "Lisa Anderson",
-         createdAt: subMonths(new Date(), 3),
-         updatedAt: new Date(),
-      },
-      {
-         id: "8",
-         name: "Warehouse Complex",
-         location: "Phoenix, AZ",
-         workerCount: 25,
-         startDate: subDays(new Date(), 120),
-         status: "hold",
-         projectType: "commercial",
-         endDate: new Date(2024, 10, 15),
-         description: "Industrial warehouse and distribution center",
-         projectManager: "Mark Thompson",
-         createdAt: subDays(new Date(), 130),
-         updatedAt: new Date(),
-      },
-   ];
+   useEffect(() => {
+      const fetchProjects = async () => {
+         setLoading(true);
+         const backendUrl = process.env.NEXT_BACKEND_URL || "http://192.168.1.20:5000/";
+         try {
+            const res = await fetch(`${backendUrl}project`);
+            const data = await res.json();
+            // Map API response with correct fields
+            setProjects(
+               data.map((p: any) => ({
+                  id: String(p.id),
+                  name: p.name || "",
+                  location: p.location || "",
+                  startDate: new Date(p.startDate),
+                  description: p.description || "",
+                  budget: p.budget || "0",
+                  status: p.status || ProjectStatus.DRAFT,
+                  createdAt: new Date(p.createdAt),
+                  updatedAt: new Date(p.updatedAt),
+               }))
+            );
+         } catch (err) {
+            setProjects([]);
+         } finally {
+            setLoading(false);
+         }
+      };
+      fetchProjects();
+   }, []);
 
    // Filter and search projects
    const filteredProjects = useMemo(() => {
       let filtered = projects;
 
-      // Filter by tab
       if (activeTab !== "all") {
          filtered = filtered.filter((project) => project.status === activeTab);
       }
 
-      // Filter by search query
       if (searchQuery) {
          filtered = filtered.filter((project) =>
-            project.name.toLowerCase().includes(searchQuery.toLowerCase())
+            project.name?.toLowerCase().includes(searchQuery.toLowerCase())
          );
       }
 
       return filtered;
    }, [projects, activeTab, searchQuery]);
 
-   const handleViewDetails = (id: string) => {
-      console.log("Viewing details for project:", id);
-      // Here you would navigate to project details page
-   };
-
    // Get counts for each status
    const statusCounts = {
       all: projects.length,
-      active: projects.filter((p) => p.status === "active").length,
-      pending: projects.filter((p) => p.status === "pending").length,
-      hold: projects.filter((p) => p.status === "hold").length,
+      open: projects.filter((p) => p.status === ProjectStatus.OPEN).length,
+      draft: projects.filter((p) => p.status === ProjectStatus.DRAFT).length,
+      closed: projects.filter((p) => p.status === ProjectStatus.CLOSED).length,
+      completed: projects.filter((p) => p.status === ProjectStatus.COMPLETED).length,
    };
 
    return (
       <div className="min-h-screen py-8">
+         {loading && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/70">
+               <Loader2 className="h-12 w-12 animate-spin text-primary" />
+            </div>
+         )}
          <div className="max-w-7xl mx-auto space-y-8">
             {/* Header Section */}
         <div>
@@ -230,21 +144,23 @@ export default function ProjectManagement() {
                         setActiveTab(value as "all" | ProjectStatus)
                      }
                   >
-                     <TabsList className="grid w-full grid-cols-4">
+                     <TabsList className="grid w-full grid-cols-5">
                         <TabsTrigger value="all" className="cursor-pointer">
                            All ({statusCounts.all})
                         </TabsTrigger>
-                        <TabsTrigger value="active" className="cursor-pointer">
-                           Active ({statusCounts.active})
+                        <TabsTrigger value={ProjectStatus.OPEN} className="cursor-pointer">
+                           Open ({statusCounts.open})
                         </TabsTrigger>
-                        <TabsTrigger value="pending" className="cursor-pointer">
-                           Pending ({statusCounts.pending})
+                        <TabsTrigger value={ProjectStatus.DRAFT} className="cursor-pointer">
+                           Draft ({statusCounts.draft})
                         </TabsTrigger>
-                        <TabsTrigger value="hold" className="cursor-pointer">
-                           On Hold ({statusCounts.hold})
+                        <TabsTrigger value={ProjectStatus.CLOSED} className="cursor-pointer">
+                           Closed ({statusCounts.closed})
+                        </TabsTrigger>
+                        <TabsTrigger value={ProjectStatus.COMPLETED} className="cursor-pointer">
+                           Completed ({statusCounts.completed})
                         </TabsTrigger>
                      </TabsList>
-
                      <TabsContent value={activeTab} className="mt-6">
                         {filteredProjects.length > 0 ? (
                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -252,7 +168,7 @@ export default function ProjectManagement() {
                                  <ProjectItem
                                     key={project.id}
                                     project={project}
-                                    onViewDetails={handleViewDetails}
+                                    onViewDetails={() => {}}
                                  />
                               ))}
                            </div>

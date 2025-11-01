@@ -40,8 +40,8 @@ export default function SignInPage() {
          {
             router.push("/Dashboard");
          }
-        } else if (auth.role === "Admin") {
-          router.push("/admin") // or your user dashboard
+        } else if (auth.role === "SuperAdmin") {
+          router.push("/SuperAdmin") // or your user dashboard
        
       
     } 

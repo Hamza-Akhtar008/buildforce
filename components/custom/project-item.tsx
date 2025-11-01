@@ -2,8 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { Project } from "@/types";
-import { Button } from "@/components/ui/button";
-import { MapPin, Users, Calendar, Eye } from "lucide-react";
+import { MapPin, Calendar, FileText, DollarSign } from "lucide-react";
 import { format } from "date-fns";
 
 interface ProjectItemProps {
@@ -17,33 +16,18 @@ export function ProjectItem({
    onViewDetails,
    className,
 }: ProjectItemProps) {
-   const { id, name, location, workerCount, startDate, status } = project;
+   const { name, location, startDate, status } = project;
 
-   const getStatusColor = (status: string) => {
-      switch (status) {
-         case "active":
-            return "bg-green-500/20 text-green-700 border-green-500/30";
-         case "pending":
-            return "bg-yellow-500/20 text-yellow-700 border-yellow-500/30";
-         case "hold":
-            return "bg-red-500/20 text-red-700 border-red-500/30";
-         default:
-            return "bg-gray-500/20 text-gray-700 border-gray-500/30";
-      }
-   };
+   const statusText = String(status).toLowerCase();
+   const statusStyles = {
+      draft:      { dot: "bg-slate-500",   chip: "bg-slate-600 text-white border-transparent" },
+      open:       { dot: "bg-green-500",   chip: "bg-green-600 text-white border-transparent" },
+      closed:     { dot: "bg-red-500",     chip: "bg-red-600 text-white border-transparent" },
+      completed:  { dot: "bg-blue-500",    chip: "bg-blue-600 text-white border-transparent" },
+      default:    { dot: "bg-gray-500",    chip: "bg-gray-600 text-white border-transparent" },
+   } as const;
 
-   const getStatusDot = (status: string) => {
-      switch (status) {
-         case "active":
-            return "bg-green-500";
-         case "pending":
-            return "bg-yellow-500";
-         case "hold":
-            return "bg-red-500";
-         default:
-            return "bg-gray-500";
-      }
-   };
+   const styles = (statusStyles as any)[statusText] || statusStyles.default;
 
    return (
       <div
@@ -57,19 +41,14 @@ export function ProjectItem({
             <div className="flex-1">
                <h3 className="text-lg font-semibold mb-2">{name}</h3>
                <div className="flex items-center space-x-1 mb-2">
-                  <div
-                     className={cn(
-                        "w-2 h-2 rounded-full",
-                        getStatusDot(status)
-                     )}
-                  ></div>
+                  <div className={cn("w-2 h-2 rounded-full", styles.dot)} />
                   <span
                      className={cn(
                         "inline-flex items-center px-2 py-1 rounded-md text-xs font-medium border",
-                        getStatusColor(status)
+                        styles.chip
                      )}
                   >
-                     {status.charAt(0).toUpperCase() + status.slice(1)}
+                     {statusText.charAt(0).toUpperCase() + statusText.slice(1)}
                   </span>
                </div>
             </div>
@@ -79,32 +58,28 @@ export function ProjectItem({
          <div className="space-y-3 mb-6">
             <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                <MapPin className="h-4 w-4" />
-               <span>{location}</span>
-            </div>
-
-            <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-               <Users className="h-4 w-4" />
-               <span>
-                  {workerCount} {workerCount === 1 ? "worker" : "workers"}
-               </span>
+               <span>{location || "No location"}</span>
             </div>
 
             <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                <Calendar className="h-4 w-4" />
-               <span>Started {format(startDate, "MMM d, yyyy")}</span>
+               <span>Started {format(new Date(startDate), "MMM d, yyyy")}</span>
             </div>
-         </div>
 
-         {/* View Details Button */}
-         <div className="pt-4 border-t">
-            <Button
-               onClick={() => onViewDetails(id)}
-               variant="outline"
-               className="w-full cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
-            >
-               <Eye className="h-4 w-4 mr-2" />
-               View Details
-            </Button>
+            <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+               <FileText className="h-4 w-4" />
+               <span>{project.description || "No description"}</span>
+            </div>
+
+            <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+               <DollarSign className="h-4 w-4" />
+               <span>
+                  {typeof project.budget === 'string' && project.budget 
+                    ? `$${parseFloat(project.budget).toFixed(2)}` 
+                    : '$0.00'
+                  }
+               </span>
+            </div>
          </div>
       </div>
    );

@@ -1,5 +1,4 @@
-import { AdminSidebar } from "@/components/common/admin-sidebar";
-import { AdminHeader } from "@/components/common/AdminHeader";
+import { SuperAdminSidebar } from "@/components/common/super-admin-sidebar";
 
 export default function AdminLayout({
    children,
@@ -8,11 +7,11 @@ export default function AdminLayout({
 }) {
    return (
       <div className="dark min-h-screen bg-background text-foreground">
-         <AdminSidebar />
+         <SuperAdminSidebar />
          <main className="md:ml-64">
-            <AdminHeader />
             <div className="container mx-auto p-6">{children}</div>
          </main>
       </div>
    );
 }
+
