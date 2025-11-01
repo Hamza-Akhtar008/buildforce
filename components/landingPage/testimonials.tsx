@@ -38,11 +38,11 @@ export function Testimonials() {
       className="relative bg-[#222222] rounded-2xl p-8 pt-14 border border-[#222222] shadow-xl w-full h-full"
     >
       {/* Floating Profile Image */}
-      <div className="absolute -top-8 left-8">
+      <div className="absolute -top-10 left-8">
         <img
           src={testimonial.image}
           alt={testimonial.name}
-          className="w-16 h-16 rounded-full object-cover border-4 border-[#222222] shadow-lg"
+          className="w-20 h-20 rounded-full object-cover border-4 border-[#222222] shadow-lg"
         />
       </div>
 
@@ -91,10 +91,10 @@ export function Testimonials() {
   )
 
   return (
-    <section className="w-full bg-[#161616] rounded-[42px] py-16 px-4 md:px-8">
+    <section className="w-full bg-[#161616] rounded-[42px] py-10 px-4 md:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Title */}
-        <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 text-white">
+        <h2 className="text-4xl md:text-5xl font-normal text-center mb-25.5 text-white">
           Nothing compares to{" "}
           <span className="text-[#CEA134]">Buildforce</span>
         </h2>
@@ -102,13 +102,13 @@ export function Testimonials() {
         {/* Grid Rows */}
         <div className="flex flex-col gap-8">
           {/* Row 1 — grid-cols-[2fr_1fr] */}
-          <div className="grid grid-cols-[2fr_1fr] gap-8">
+          <div className="grid grid-cols-[2fr_1fr] gap-16 mb-6">
             {renderCard(testimonials[0])}
             {renderCard(testimonials[1])}
           </div>
 
           {/* Row 2 — grid-cols-[1fr_2fr] */}
-          <div className="grid grid-cols-[1fr_2fr] gap-8">
+          <div className="grid grid-cols-[1fr_2fr] gap-16">
             {renderCard(testimonials[2])}
             {renderCard(testimonials[3])}
           </div>
