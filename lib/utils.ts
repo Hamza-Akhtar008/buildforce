@@ -5,4 +5,4 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const Baseurl = process.env.NEXT_BACKEND_URL||"http://192.168.1.20:5000/";
+export const Baseurl = process.env.NEXT_PUBLIC_BACKEND_URL||"https://buildforce-backend2-6e6q.onrender.com/";

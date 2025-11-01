@@ -19,7 +19,7 @@ export default function ProjectManagement() {
    useEffect(() => {
       const fetchProjects = async () => {
          setLoading(true);
-         const backendUrl = process.env.NEXT_BACKEND_URL || "http://192.168.1.20:5000/";
+         const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://192.168.1.20:5000/";
          try {
             const res = await fetch(`${backendUrl}project`);
             const data = await res.json();

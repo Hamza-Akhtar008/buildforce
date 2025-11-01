@@ -33,7 +33,7 @@ const AddCompanyPage = () => {
 
   useEffect(() => {
     const fetchCompanies = async () => {
-      const backendUrl = process.env.NEXT_BACKEND_URL || "http://192.168.1.20:5000/";
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://192.168.1.20:5000/";
       try {
         const res = await fetch(`${backendUrl}company-profile`);
         const data = await res.json();
@@ -60,7 +60,7 @@ const AddCompanyPage = () => {
     e.preventDefault();
     setLoading(true); // show loader
 
-    const backendUrl = process.env.NEXT_BACKEND_URL || "http://192.168.1.20:5000/";
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://192.168.1.20:5000/";
 
     const formDataToSend = new FormData();
 
