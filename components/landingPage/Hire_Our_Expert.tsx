@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 export interface Expert {
   id: string
   name: string
@@ -15,11 +17,11 @@ interface HireExpertsProps {
 
 export function HireExperts({ experts }: HireExpertsProps) {
   return (
-    <section className="w-full bg-[#161616] rounded-[42px] py-20 px-4">
-      <div className="max-w-8xl mx-auto">
+    <section className="w-full bg-[#161616] rounded-[42px] py-10 px-4">
+      <div className="max-w-8xl mx-auto px-16">
         {/* Header */}
         <div className="text-center">
-          <h2 className="text-[64px]  text-white mb-2">
+          <h2 className="text-[64px]  text-white mb-9">
             Hire our <span className="text-[#CEA134]">Experts</span>
           </h2>
         </div>
@@ -30,20 +32,24 @@ export function HireExperts({ experts }: HireExpertsProps) {
             <div key={expert.id} className="bg-[#222222] rounded-[32px] p-6 flex flex-col gap-4">
               {/* Profile Section */}
               <div className="flex items-center gap-4">
-                <img
+                <Image
                   src={expert.image || "/placeholder.svg"}
                   alt={expert.name}
-                  className="w-16 h-16 rounded-full object-cover"
+                  width={64}
+                  height={64}
+                  className="rounded-full object-cover"
                 />
                 <div>
                   <h3 className="text-white font-semibold text-lg">{expert.name}</h3>
-                  <p className="text-slate-400 text-sm">{expert.location}</p>
+                  <p className="text-[#5A5A60] text-sm">{expert.location}</p>
                 </div>
               </div>
 
               {/* Badge */}
               <div className="text-sm text-slate-300">
-                <p>{expert.badge}</p>
+                {expert.badge.split('\n').map((line, index) => (
+                  <p key={index}>{line}</p>
+                ))}
               </div>
 
               {/* Stats */}

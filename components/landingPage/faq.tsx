@@ -35,14 +35,14 @@ export function FAQ() {
   const [expandedIndex, setExpandedIndex] = useState(0)
 
   return (
-    <section className="bg-[#161616] rounded-3xl py-16 px-8">
+    <section className="bg-[#161616] rounded-3xl py-10 px-8">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
         {/* Left Side */}
         <div className="flex flex-col justify-start">
           <div className="relative mb-6">
-            <div className="absolute -top-8 left-0 text-amber-500 text-2xl">✦</div>
+            {/* <div className="absolute -top-8 left-0 text-amber-500 text-2xl">✦</div> */}
             <h2 className="text-4xl lg:text-5xl font-light text-white">Top questions</h2>
-            <p className="text-4xl lg:text-5xl font-light italic text-white mt-2">Answered</p>
+            <p className="text-4xl lg:text-5xl font-light italic text-white mt-2 font-['Playfair_Display']">Answered</p>
           </div>
 
           <p className="text-gray-400 text-lg mb-8">
@@ -56,6 +56,10 @@ export function FAQ() {
 
         {/* Right Side - FAQ */}
         <div className="space-y-4">
+            <svg width="52" height="60" viewBox="0 0 52 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M25.9808 0L27.1658 27.9475L51.9615 15L28.3508 30L51.9615 45L27.1658 32.0525L25.9808 60L24.7958 32.0525L1.14441e-05 45L23.6108 30L1.14441e-05 15L24.7958 27.9475L25.9808 0Z" fill="#CEA134"/>
+</svg>
+
           {faqItems.map((item, index) => (
             <div key={index} className="bg-[#161616] rounded-lg overflow-hidden">
               <button
@@ -65,7 +69,7 @@ export function FAQ() {
                 <h3 className="text-lg font-medium text-white text-left">{item.question}</h3>
                 <div className="flex-shrink-0 ml-4">
                   {expandedIndex === index ? (
-                    <Minus className="w-6 h-6 text-amber-500" />
+                    <Minus className="w-6 h-6 text-white bg-[#CEA134] rounded-full" />
                   ) : (
                     <Plus className="w-6 h-6 text-amber-500" />
                   )}
