@@ -15,6 +15,7 @@ import {
    X,
    Users,
    FilePlus,
+   Building,
 } from "lucide-react";
 import { useState } from "react";
 import logo from "@/public/images/logo.png";
@@ -23,52 +24,57 @@ import Image from 'next/image'
 const sidebarItems = [
    {
       title: "Dashboard",
-      href: "/admin",
+      href: "/SuperAdmin",
       icon: Home,
    },
    {
       title: "Users",
-      href: "/admin/users",
+      href: "/SuperAdmin/users",
       icon: Users,
    },
    {
+      title: "Add Company",
+      href: "/SuperAdmin/add-company",
+      icon: Building,
+   },
+   {
       title: "My Projects",
-      href: "/admin/my-projects",
+      href: "/SuperAdmin/my-projects",
       icon: FolderOpen,
    },
    {
       title: "Add Project",
-      href: "/admin/add-project",
+      href: "/SuperAdmin/add-project",
       icon: Plus,
    },
    {
       title: "Create Job",
-      href: "/admin/add-job",
+      href: "/SuperAdmin/add-job",
       icon: FilePlus, 
    },
    {
       title: "Applications",
-      href: "/admin/applications",
+      href: "/SuperAdmin/applications",
       icon: FolderOpen,
    },
    {
       title: "Notifications",
-      href: "/admin/notifications",
+      href: "/SuperAdmin/notifications",
       icon: Bell,
    },
    {
       title: "Export Data",
-      href: "/admin/export-data",
+      href: "/SuperAdmin/export-data",
       icon: Download,
    },
    {
       title: "Profile",
-      href: "/admin/profile",
+      href: "/SuperAdmin/profile",
       icon: UserPlus,
    },
 ];
 
-export function AdminSidebar() {
+export function SuperAdminSidebar() {
    const pathname = usePathname();
    const [isMobileOpen, setIsMobileOpen] = useState(false);
 
@@ -161,7 +167,7 @@ export function AdminSidebar() {
                {/* Footer */}
                <div className="p-4 border-t border-border">
                   <div className="text-xs text-muted-foreground text-center">
-                     Build Force Admin v1.0
+                     Build Force SuperAdmin v1.0
                   </div>
                </div>
             </div>
